@@ -25,7 +25,6 @@ end
 include_recipe 'git'
 include_recipe 'database::mysql'
 
-
 # Convert the packages list to a Hash if any of the package has version specified.
 # See libraries/helper.php for the definition of `split_by_package_name_and_version` method.
 application_packages = RsApplicationRails::Helper.split_by_package_name_and_version(node['rs-services_rails']['packages'])
