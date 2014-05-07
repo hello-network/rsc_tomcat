@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rs-application_php
+# Cookbook Name:: rs-services_rails
 # Recipe:: collectd
 #
 # Copyright (C) 2014 RightScale, Inc.

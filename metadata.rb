@@ -16,11 +16,11 @@ depends 'git', '~> 2.7.0'
 depends 'collectd', '~> 1.1.0'
 depends 'rightscale_tag', '~> 1.0.1'
 
-recipe 'rs-service_rails::default', 'Installs/configures Passenger/Rails application server'
-recipe 'rs-service_rails::tags', 'Sets up application server tags used in a 3-tier deployment setup'
-recipe 'rs-service_rails::collectd', 'Sets up collectd monitoring for the application server'
-recipe 'rs-service_rails::application_backend', 'Attaches the application server to a load balancer'
-recipe 'rs-service_rails::application_backend_detached', 'Detaches the application server' +
+recipe 'rs-services_rails::default', 'Installs/configures Passenger/Rails application server'
+recipe 'rs-services_rails::tags', 'Sets up application server tags used in a 3-tier deployment setup'
+recipe 'rs-services_rails::collectd', 'Sets up collectd monitoring for the application server'
+recipe 'rs-services_rails::application_backend', 'Attaches the application server to a load balancer'
+recipe 'rs-services_rails::application_backend_detached', 'Detaches the application server' +
   ' from a load balancer'
 
 
