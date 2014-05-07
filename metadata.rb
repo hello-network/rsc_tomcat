@@ -111,8 +111,8 @@ attribute 'rs-services_rails/app_root',
     ' application name have different vhost paths. Example: http:://www.example.com, /index',
   :required => 'required',
   :recipes => [
-    'rs-application_php::tags',
-    'rs-application_php::application_backend',
+    'rs-services_rails::tags',
+    'rs-services_rails::application_backend',
   ]
 
 attribute 'rs-services_rails/bind_network_interface',
