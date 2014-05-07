@@ -1,0 +1,5 @@
+LoadPlugin exec
+
+<Plugin exec>
+  Exec "<%= @options[:apache_user] %>" "<%= @options[:collectd_lib] %>/apache_ps" "--hostname" "<%= @options[:instance_uuid] %>"
+</Plugin>
