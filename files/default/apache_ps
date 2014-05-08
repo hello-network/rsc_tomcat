@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# This script finds the number of apache processes running in the system and informs
+# collectd daemon to dispatch this information to the apache plugin.
+
+# Default values
+hostname=''
+interval=20
+
+# Displays command usage.
+usage()
+{
+  echo "Usage: $0 [-h/--hostname <hostname>] [-i/--sample-interval <seconds>]"
+  echo "    -h/--hostname:         The hostname of the machine. Instance ID or UUID"
+  echo "    -i/--sample-interval:  The sample interval of the file check (in seconds).  Default: 20 seconds"
+  exit 1
+}
+
+if [[ $# -le 1 ]]; then
+  usage
+fi
+
+while [[ $# -gt 1 ]]; do
+  cmd_option="$1"
+  shift
+
+  case $cmd_option in
+    -h|--hostname)
+      hostname=$1
+      shift
+      ;;
+    -i|--sample-interval)
+      interval=$1
+      shift
+      ;;
+    *)
+      usage
+      ;;
+  esac
+done
+
+if [[ $hostname == "" ]]; then
+  echo "hostname is missing!"
+  usage
+fi
+
+# Get the apache process name as its different between Redhat and
+# Debian-based distributions
+distro=`lsb_release -si`
+
+apache_ps_name=""
+
+# Do a case-insensitive search when comparing distributions
+# instead of having every possible names in the conditions
+shopt -s nocasematch
+if [[ $distro == "centos" || $distro == "redhat" ]]; then
+  apache_ps_name="httpd"
+
+  # Check to see if we're using worker or prefork.
+  ret=`grep -c '^HTTPD=/usr/sbin/httpd.worker' /etc/sysconfig/httpd`
+  if [[ $ret -gt 0 ]]
+  then
+    apache_ps_name="httpd.worker"
+  fi
+elif [[ $distro == "ubuntu" ]]; then
+  apache_ps_name="apache2"
+else
+  echo "Could not find apache process!"
+  exit 1
+fi
+
+# Find the number of apache processes and threads
+while true; do
+  processes=0
+  threads=0
+
+  current_time=`date +%s`
+
+  for line in `ps -C $apache_ps_name -o nlwp --no-header`;
+  do
+    processes=$(($processes + 1))
+    threads=$(($threads + $line))
+  done
+
+  echo -e "PUTVAL $hostname/apache/ps_count interval=$interval $current_time:$processes:$threads"
+  sleep $interval
+done
