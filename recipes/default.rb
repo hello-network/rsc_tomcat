@@ -26,6 +26,10 @@ include_recipe 'git'
 include_recipe 'database::mysql'
 
 package "ruby19"
+ohai "reload" do
+  action :reload
+end
+
 
 # Convert the packages list to a Hash if any of the package has version specified.
 # See libraries/helper.php for the definition of `split_by_package_name_and_version` method.
