@@ -30,8 +30,12 @@ ohai "reload" do
   action :reload
 end
 
-node.override['passenger']['ruby_bin'] = '/usr/bin/ruby'
-node.override['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{node['passenger']['version']}"
+node.override['passenger']['install_method'] = 'package'
+node.override['passenger']['package']['name']="mod_passenger"
+node.override['passenger']['package']['version'] = '4.0.14'
+node.override['languages']['ruby']['bin-dir']='/usr/bin'
+#node.override['passenger']['ruby_bin'] = '/usr/bin/ruby'
+#node.override['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{node['passenger']['version']}"
 
 # Convert the packages list to a Hash if any of the package has version specified.
 # See libraries/helper.php for the definition of `split_by_package_name_and_version` method.
