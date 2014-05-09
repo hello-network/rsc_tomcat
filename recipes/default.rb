@@ -32,7 +32,7 @@ end
 
 node.override['passenger']['install_method'] = 'package'
 node.override['passenger']['package']['name']="mod_passenger"
-node.override['passenger']['package']['version'] = '4.0.14'
+node.set['passenger']['package'].delete('version')
 node.override['languages']['ruby']['bin-dir']='/usr/bin'
 #node.override['passenger']['ruby_bin'] = '/usr/bin/ruby'
 #node.override['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{node['passenger']['version']}"
