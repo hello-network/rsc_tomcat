@@ -17,6 +17,10 @@
 # limitations under the License.
 #
 
+#ruby config
+default['passenger']['ruby_bin'] = '/usr/bin/ruby'
+default['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{passenger['version']}"
+
 # Packages to install
 default['rs-services_rails']['packages'] = []
 
