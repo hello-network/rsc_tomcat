@@ -25,11 +25,13 @@ end
 include_recipe 'git'
 include_recipe 'database::mysql'
 
-package "ruby19"
+#package "ruby19*"
 ohai "reload" do
   action :reload
 end
 
+node.override['passenger']['ruby_bin'] = '/usr/bin/ruby'
+node.override['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{node['passenger']['version']}"
 
 # Convert the packages list to a Hash if any of the package has version specified.
 # See libraries/helper.php for the definition of `split_by_package_name_and_version` method.
