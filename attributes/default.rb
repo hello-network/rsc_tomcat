@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rs-services_rails
+# Cookbook Name:: rsc_passenger
 # Attribute:: default
 #
 # Copyright (C) 2013 RightScale, Inc.
@@ -18,63 +18,63 @@
 #
 
 #ruby config
-default['passenger']['ruby_bin'] = '/usr/bin/ruby'
-default['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{passenger['version']}"
+#default['passenger']['ruby_bin'] = '/usr/bin/ruby'
+#default['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{passenger['version']}"
 
 # Packages to install
-default['rs-services_rails']['packages'] = []
+default['rsc_passenger']['packages'] = []
 
 # Application listen port
-default['rs-services_rails']['listen_port'] = 8080
+default['rsc_passenger']['listen_port'] = 8080
 
 # The source control provider
-default['rs-services_rails']['scm']['provider'] = 'git'
+default['rsc_passenger']['scm']['provider'] = 'git'
 
 # The repository to checkout the code from
-default['rs-services_rails']['scm']['repository'] = nil
+default['rsc_passenger']['scm']['repository'] = nil
 
 # The revision of application code to checkout from the repository
-default['rs-services_rails']['scm']['revision'] = 'master'
+default['rsc_passenger']['scm']['revision'] = 'master'
 
 # The private key to access the repository via SSH
-default['rs-services_rails']['scm']['deploy_key'] = nil
+default['rsc_passenger']['scm']['deploy_key'] = nil
 
 # The name of the application
-default['rs-services_rails']['application_name'] = "myapp"
+default['rsc_passenger']['application_name'] = "myapp"
 
 # The root of the application
-default['rs-services_rails']['app_root'] = '/'
-default['rs-services_rails']['precompile_assets'] = 'false'
+default['rsc_passenger']['app_root'] = '/'
+default['rsc_passenger']['precompile_assets'] = 'false'
 
 # The command used to perform application migration
 #
 # @example: To import database contents from the dump file for a LAMP server, the following can be set as the
 # migration command:
 #
-#   node.override['rs-services_rails']['migration_command'] =
+#   node.override['rsc_passenger']['migration_command'] =
 #     "gunzip < #{dump_file}.sql.gz | mysql -u#{database_username} -p#{database_password} #{schema_name}"
 #
-default['rs-services_rails']['migration_command'] = nil
+default['rsc_passenger']['migration_command'] = nil
 
 # Database configuration
 
 # The database provider
-default['rs-services_rails']['database']['provider'] = 'mysql'
+default['rsc_passenger']['database']['provider'] = 'mysql'
 
 # The database host
-default['rs-services_rails']['database']['host'] = 'localhost'
+default['rsc_passenger']['database']['host'] = 'localhost'
 
 # The database username
-default['rs-services_rails']['database']['user'] = nil
+default['rsc_passenger']['database']['user'] = nil
 
 # The database password
-default['rs-services_rails']['database']['password'] = nil
+default['rsc_passenger']['database']['password'] = nil
 
 # The database schema name
-default['rs-services_rails']['database']['schema'] = nil
+default['rsc_passenger']['database']['schema'] = nil
 
 # Remote recipe to attach application server to load balancer
-default['rs-services_rails']['remote_attach_recipe'] = 'rs-haproxy::frontend'
+default['rsc_passenger']['remote_attach_recipe'] = 'rs-haproxy::frontend'
 
 # Remote recipe to detach application server from load balancer
-default['rs-services_rails']['remote_detach_recipe'] = 'rs-haproxy::frontend'
+default['rsc_passenger']['remote_detach_recipe'] = 'rs-haproxy::frontend'

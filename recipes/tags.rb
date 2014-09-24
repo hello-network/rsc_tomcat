@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rs-services_rails
+# Cookbook Name:: rsc_passenger
 # Recipe:: tags
 #
 # Copyright (C) 2014 RightScale, Inc.
@@ -24,12 +24,12 @@ end
 include_recipe 'rightscale_tag::default'
 
 # Validate application name
-RsApplicationRails::Helper.validate_application_name(node['rs-services_rails']['application_name'])
+RsApplicationPassenger::Helper.validate_application_name(node['rsc_passenger']['application_name'])
 
 # Set up application server tags
-rightscale_tag_application node['rs-services_rails']['application_name'] do
-  bind_ip_address RsApplicationRails::Helper.get_bind_ip_address(node)
-  bind_port node['rs-services_rails']['listen_port'].to_i
-  vhost_path node['rs-services_rails']['vhost_path']
+rightscale_tag_application node['rsc_passenger']['application_name'] do
+  bind_ip_address RsApplicationPassenger::Helper.get_bind_ip_address(node)
+  bind_port node['rsc_passenger']['listen_port'].to_i
+  vhost_path node['rsc_passenger']['vhost_path']
   action :create
 end

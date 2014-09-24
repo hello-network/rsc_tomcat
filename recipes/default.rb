@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rs-services_rails
+# Cookbook Name:: rsc_passenger
 # Recipe:: default
 #
 # Copyright (C) 2014 RightScale, Inc.
@@ -25,59 +25,60 @@ end
 include_recipe 'git'
 include_recipe 'database::mysql'
 
-#package "ruby19*"
-ohai "reload" do
-  action :reload
+# override some passenger_apache2 attributes for our custom ruby
+if node[:rsc_passenger][:passenger][:version]#.blank?
+  node.override['passenger']['version']=node[:rsc_passenger][:passenger][:version]
+else
+  node.set['passenger'].delete('version') 
 end
 
-node.override['passenger']['install_method'] = 'package'
-node.override['passenger']['package']['name']="mod_passenger"
-node.set['passenger']['package'].delete('version')
-node.override['languages']['ruby']['bin-dir']='/usr/bin'
-#node.override['passenger']['ruby_bin'] = '/usr/bin/ruby'
-#node.override['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{node['passenger']['version']}"
-
+node.override['passenger']['gem_bin'] ="#{node['rsc_passenger']['ruby_path']}/gem"
+node.override['passenger']['ruby_bin'] = "#{node['rsc_passenger']['ruby_path']}/ruby" 
+#node.override['passenger']['root_path']   = %x{#{node['rsc_passenger']['ruby_path']}/gem env gemdir}.chomp!+"/gems/passenger-#{node['passenger']['version']}" 
+ruby_block "foo" do
+  block do
+    node.override['passenger']['root_path']   = %x{#{node[:passenger][:gem_bin]} env gemdir}.chomp!+"/gems/passenger-#{node['passenger']['version']}" 
+  end
+end
 # Convert the packages list to a Hash if any of the package has version specified.
 # See libraries/helper.php for the definition of `split_by_package_name_and_version` method.
-application_packages = RsApplicationRails::Helper.split_by_package_name_and_version(node['rs-services_rails']['packages'])
+application_packages = RsApplicationPassenger::Helper.split_by_package_name_and_version(node['rsc_passenger']['packages'])
 
-# TODO: The database block in the php block below doesn't accept node variables.
+# TODO: The database block in the rails block below doesn't accept node variables.
 # It is a known issue and will be fixed by Opscode.
 #
-database_host = node['rs-services_rails']['database']['host']
-database_user = node['rs-services_rails']['database']['user']
-database_password = node['rs-services_rails']['database']['password']
-database_schema = node['rs-services_rails']['database']['schema']
+database_host = node['rsc_passenger']['database']['host']
+database_user = node['rsc_passenger']['database']['user']
+database_password = node['rsc_passenger']['database']['password']
+database_schema = node['rsc_passenger']['database']['schema']
 
-node.override['apache']['listen_ports'] = [node['rs-services_rails']['listen_port']]
-
+node.override['apache']['listen_ports'] = [node['rsc_passenger']['listen_port']]
 # Enable Apache extended status page
 Chef::Log.info "Overriding 'apache/ext_status' to true"
 node.override['apache']['ext_status'] = true
 # Set up application
-application node['rs-services_rails']['application_name'] do
-  path "/home/webapps/#{node['rs-services_rails']['application_name']}"
+application node['rsc_passenger']['application_name'] do
+  path "/home/webapps/#{node['rsc_passenger']['application_name']}"
   owner node['apache']['user']
   group node['apache']['group']
 
   # Configure SCM to check out application from
-  repository node['rs-services_rails']['scm']['repository']
-  revision node['rs-services_rails']['scm']['revision']
-  scm_provider node['rs-services_rails']['scm']['provider']
-  if node['rs-services_rails']['scm']['deploy_key'] && !node['rs-services_rails']['scm']['deploy_key'].empty?
-    deploy_key node['rs-services_rails']['scm']['deploy_key']
+  repository node['rsc_passenger']['scm']['repository']
+  revision node['rsc_passenger']['scm']['revision']
+  scm_provider node['rsc_passenger']['scm']['provider']
+  if node['rsc_passenger']['scm']['deploy_key'] && !node['rsc_passenger']['scm']['deploy_key'].empty?
+    deploy_key node['rsc_passenger']['scm']['deploy_key']
   end
 
   # Install application related packages
   packages application_packages
   #set the RAILS_ENV
-  environment_name node['rs-services_rails']['environment']
+  environment_name node['rsc_passenger']['environment']
   # Application migration step
-  if node['rs-services_rails']['migration_command'] && !node['rs-services_rails']['migration_command'].empty?
+  if node['rsc_passenger']['migration_command'] && !node['rsc_passenger']['migration_command'].empty?
     migrate true
-    migration_command node['rs-services_rails']['migration_command']
+    migration_command node['rsc_passenger']['migration_command']
   end
-
 
   #Configure Rails
   rails  do
@@ -91,7 +92,7 @@ application node['rs-services_rails']['application_name'] do
 
   # Configure Apache and mod_php to run application by creating virtual host
   passenger_apache2 do
-    #cookbook 'rs-services_rails'
+    #cookbook 'rsc_passenger'
     webapp_template 'web_app.conf.erb'
   end
 end

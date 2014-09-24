@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rs-application_rails
+# Cookbook Name:: rsc_passenger
 # Library:: helper
 #
 # Copyright (C) 2013 RightScale, Inc.
@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-module RsApplicationRails
+module RsApplicationPassenger
   # This module contains helper methods for rs-application_php cookbook.
   #
   module Helper
@@ -62,7 +62,7 @@ module RsApplicationRails
     # @raise [RuntimeError] if the IP address type is not either 'public' or 'private'
     #
     def self.get_bind_ip_address(node)
-      case node['rs-services_rails']['bind_network_interface']
+      case node['rsc_passenger']['bind_network_interface']
       when "private"
         if node['cloud']['private_ips'].nil? || node['cloud']['private_ips'].empty?
           raise 'Cannot find private IP of the server!'
@@ -76,7 +76,7 @@ module RsApplicationRails
 
         node['cloud']['public_ips'].first
       else
-        raise "Unknown network interface '#{node['rs-services_rails']['bind_network_interface']}'!" +
+        raise "Unknown network interface '#{node['rsc_passenger']['bind_network_interface']}'!" +
           " The network interface must be either 'public' or 'private'."
       end
     end

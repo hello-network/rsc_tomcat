@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rs-services_rails
+# Cookbook Name:: rsc_passenger
 # Recipe:: collectd
 #
 # Copyright (C) 2014 RightScale, Inc.
@@ -48,7 +48,7 @@ end
 # Set up apache monitoring
 collectd_plugin 'apache' do
   options(
-    'URL' => "http://localhost:#{node['rs-services_rails']['listen_port']}/server-status?auto"
+    'URL' => "http://localhost:#{node['rsc_passenger']['listen_port']}/server-status?auto"
   )
 end
 
@@ -60,7 +60,7 @@ end
 
 collectd_plugin 'apache_ps' do
   template 'apache_ps.conf.erb'
-  cookbook 'rs-services_rails'
+  cookbook 'rsc_passenger'
   options({
     :collectd_lib => node['collectd']['plugin_dir'],
     :instance_uuid => node['rightscale']['instance_uuid'],
