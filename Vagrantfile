@@ -95,7 +95,7 @@ Vagrant.configure("2") do |config|
         :environment => 'staging',
         :listen_port =>'8080',
         :precompile_assets => 'true',
-        :gems=> 'bundler,rake' ,
+        :gems=> ["bundler","rake"] ,
         ruby_path: '/usr/local/bin',
         bind_network_interface: 'private',
         vhost_path: 'www.example.com',

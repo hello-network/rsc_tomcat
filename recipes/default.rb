@@ -57,7 +57,7 @@ node.override['apache']['listen_ports'] = [node['rsc_passenger']['listen_port']]
 Chef::Log.info "Overriding 'apache/ext_status' to true"
 node.override['apache']['ext_status'] = true
 # Set up application
-gems = node['rsc_passenger']['gems'].split(',') if !node['rsc_passenger']['gems'].empty?
+gems = node['rsc_passenger']['gems']# if !node['rsc_passenger']['gems'].empty?
 log "Installing gems: #{gems}"
 precompile_assets = (!node['rsc_passenger']['precompile_assets'].empty? and node['rsc_passenger']['precompile_assets']=='true') ? true:false
 application node['rsc_passenger']['application_name'] do
