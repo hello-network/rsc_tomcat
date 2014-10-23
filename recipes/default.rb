@@ -35,7 +35,7 @@ end
 node.override['passenger']['gem_bin'] ="#{node['rsc_passenger']['ruby_path']}/gem"
 node.override['passenger']['ruby_bin'] = "#{node['rsc_passenger']['ruby_path']}/ruby" 
 #node.override['passenger']['root_path']   = %x{#{node['rsc_passenger']['ruby_path']}/gem env gemdir}.chomp!+"/gems/passenger-#{node['passenger']['version']}" 
-ruby_block "foo" do
+ruby_block "update passenger root" do
   block do
     node.override['passenger']['root_path']   = %x{#{node[:passenger][:gem_bin]} env gemdir}.chomp!+"/gems/passenger-#{node['passenger']['version']}" 
   end
@@ -57,11 +57,16 @@ node.override['apache']['listen_ports'] = [node['rsc_passenger']['listen_port']]
 Chef::Log.info "Overriding 'apache/ext_status' to true"
 node.override['apache']['ext_status'] = true
 # Set up application
+gems = node['rsc_passenger']['gems'].split(',') if !node['rsc_passenger']['gems'].empty?
+log "Installing gems: #{gems}"
+precompile_assets = (!node['rsc_passenger']['precompile_assets'].empty? and node['rsc_passenger']['precompile_assets']=='true') ? true:false
 application node['rsc_passenger']['application_name'] do
   path "/home/webapps/#{node['rsc_passenger']['application_name']}"
   owner node['apache']['user']
   group node['apache']['group']
-
+  
+ 
+  
   # Configure SCM to check out application from
   repository node['rsc_passenger']['scm']['repository']
   revision node['rsc_passenger']['scm']['revision']
@@ -82,6 +87,10 @@ application node['rsc_passenger']['application_name'] do
 
   #Configure Rails
   rails  do
+    gems gems
+   # bundle_options ""
+    bundler_deployment true
+    precompile_assets precompile_assets
     database do
       host database_host
       database database_schema

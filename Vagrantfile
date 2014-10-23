@@ -88,21 +88,22 @@ Vagrant.configure("2") do |config|
       rightscale: {
             instance_uuid:'abcdef1234'
       },
-      :rsc_ruby=>{ruby: {version: '2.0.0-p451'}},
+      :rsc_ruby=>{ruby: {version: '1.9.3-p547'}},
       
       :rsc_passenger => {
         :application_name => 'example',
         :environment => 'staging',
-        :listen_port =>'8000',
+        :listen_port =>'8080',
         :precompile_assets => 'true',
+        :gems=> 'bundler,rake' ,
         ruby_path: '/usr/local/bin',
         bind_network_interface: 'private',
         vhost_path: 'www.example.com',
-        :passenger =>{ version: '4.0.14'},
+        :passenger =>{ version: '3.0.21'},
         :scm => {
           :provider => 'git',
-          :revision => 'unified_rails',
-          :repository => 'git://github.com/rightscale/examples.git'
+          :revision => 'unified_rails3',
+          :repository => 'git://github.com/cdwilhelm/examples.git'
         },
         :database => {
           :provider => 'mysql',

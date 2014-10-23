@@ -27,9 +27,10 @@ recipe 'rsc_passenger::application_backend_detached', 'Detaches the application 
 attribute 'rsc_passenger/gems',
   :display_name => 'Additional Gems to Install',
   :description => 'List of additional GEMS to be installed before starting the deployment.' +
-  ' Package versions can be specified. Example: bundler, rake',
+  ' Package versions can be specified. Include bundler to install gems using the Gemfile. '+ 
+  ' Example: bundler, rake',
   :type => 'array',
-  :required => 'optional',
+  :default=>'bundler,rake',
   :recipes => ['rsc_passenger::default']
 
 attribute 'rsc_passenger/listen_port',
