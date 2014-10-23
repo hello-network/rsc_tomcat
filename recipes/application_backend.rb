@@ -45,7 +45,7 @@ file remote_request_json do
   mode 0660
   content ::JSON.pretty_generate({
     'remote_recipe' => {
-      'application_bind_ip' => RsApplicationPhp::Helper.get_bind_ip_address(node),
+      'application_bind_ip' => RsApplicationPassenger::Helper.get_bind_ip_address(node),
       'application_bind_port' => node['rsc_passenger']['listen_port'],
       'application_server_id' => node['rightscale']['instance_uuid'],
       'pool_name' => node['rsc_passenger']['application_name'],
