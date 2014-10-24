@@ -82,9 +82,6 @@ application node['rsc_passenger']['application_name'] do
   #set the RAILS_ENV
   environment_name node['rsc_passenger']['environment']
    
-  # do migrations
-  migrate true
- 
   # Application migration step
   if node['rsc_passenger']['migration_command'] && !node['rsc_passenger']['migration_command'].empty?
     migrate true
@@ -93,7 +90,7 @@ application node['rsc_passenger']['application_name'] do
 
   #Configure Rails
   rails  do
-    gems gems
+   gems gems
    # bundle_options ""
     bundler_deployment false
     precompile_assets precompile_assets
