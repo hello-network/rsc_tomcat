@@ -30,7 +30,7 @@ attribute 'rsc_passenger/gems',
   ' Package versions can be specified. Include bundler to install gems using the Gemfile. '+ 
   ' Example: bundler, rake',
   :type => 'array',
-  :default=>'bundler,rake',
+  :default=>["bundler","rake"],
   :recipes => ['rsc_passenger::default']
 
 attribute 'rsc_passenger/listen_port',
