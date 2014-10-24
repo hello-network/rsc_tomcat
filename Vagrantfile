@@ -70,6 +70,7 @@ Vagrant.configure("2") do |config|
   # config.berkshelf.except = []
 
   config.vm.provision :chef_solo do |chef|
+    chef.log_level='info'
     chef.json = {
       :mysql => {
         :server_root_password => 'rootpass',
@@ -92,7 +93,7 @@ Vagrant.configure("2") do |config|
       
       :rsc_passenger => {
         :application_name => 'example',
-        :environment => 'staging',
+        :environment => 'production',
         :listen_port =>'8080',
         :precompile_assets => 'true',
         :gems=> ["bundler","rake"] ,
