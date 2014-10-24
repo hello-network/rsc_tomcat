@@ -73,6 +73,9 @@ default['rsc_passenger']['database']['password'] = nil
 # The database schema name
 default['rsc_passenger']['database']['schema'] = nil
 
+# The database adapter/driver name
+default['rsc_passenger']['database']['adapter'] = 'mysql2'
+
 # Remote recipe to attach application server to load balancer
 default['rsc_passenger']['remote_attach_recipe'] = 'rs-haproxy::frontend'
 

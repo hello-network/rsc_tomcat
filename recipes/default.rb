@@ -51,6 +51,7 @@ database_host = node['rsc_passenger']['database']['host']
 database_user = node['rsc_passenger']['database']['user']
 database_password = node['rsc_passenger']['database']['password']
 database_schema = node['rsc_passenger']['database']['schema']
+database_adapter = node['rsc_passenger']['database']['adapter']
 
 node.override['apache']['listen_ports'] = [node['rsc_passenger']['listen_port']]
 # Enable Apache extended status page
@@ -60,6 +61,7 @@ node.override['apache']['ext_status'] = true
 gems = node['rsc_passenger']['gems']# if !node['rsc_passenger']['gems'].empty?
 log "Installing gems: #{gems}"
 precompile_assets = (!node['rsc_passenger']['precompile_assets'].empty? and node['rsc_passenger']['precompile_assets']=='true') ? true:false
+
 application node['rsc_passenger']['application_name'] do
   path "/home/webapps/#{node['rsc_passenger']['application_name']}"
   owner node['apache']['user']
@@ -79,6 +81,10 @@ application node['rsc_passenger']['application_name'] do
   packages application_packages
   #set the RAILS_ENV
   environment_name node['rsc_passenger']['environment']
+   
+  # do migrations
+  migrate true
+ 
   # Application migration step
   if node['rsc_passenger']['migration_command'] && !node['rsc_passenger']['migration_command'].empty?
     migrate true
@@ -89,9 +95,10 @@ application node['rsc_passenger']['application_name'] do
   rails  do
     gems gems
    # bundle_options ""
-    bundler_deployment true
+    bundler_deployment false
     precompile_assets precompile_assets
     database do
+      adapter database_adapter
       host database_host
       database database_schema
       username database_user
@@ -104,4 +111,6 @@ application node['rsc_passenger']['application_name'] do
     #cookbook 'rsc_passenger'
     webapp_template 'web_app.conf.erb'
   end
+ 
+  action :force_deploy
 end
