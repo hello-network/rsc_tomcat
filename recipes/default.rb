@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rsc_passenger
+# Cookbook Name:: rsc_tomcat
 # Recipe:: default
 #
 # Copyright (C) 2014 RightScale, Inc.
@@ -22,92 +22,53 @@ marker "recipe_start_rightscale" do
 end
 
 
-include_recipe 'git'
-include_recipe 'database::mysql'
+#include_recipe 'git'
+#include_recipe 'database::mysql'
 
-# override some passenger_apache2 attributes for our custom ruby
-if node[:rsc_passenger][:passenger][:version]#.blank?
-  node.override['passenger']['version']=node[:rsc_passenger][:passenger][:version]
-else
-  node.set['passenger'].delete('version') 
+#override some attributes
+node.override['java']['install_flavor'] = node['rsc_tomcat']['java']['flavor']
+if node['rsc_tomcat']['java']['flavor']=='oracle'
+  node.override['java']['oracle']['accept_oracle_download_terms']=true
 end
+node.override['java']['jdk_version']    = node['rsc_tomcat']['java']['version']
+node.override['tomcat']['java_options'] = node['rsc_tomcat']['java']['options']
+node.override['tomcat']['base_version'] = node[:rsc_tomcat][:tomcat][:version] 
 
-node.override['passenger']['gem_bin'] ="#{node['rsc_passenger']['ruby_path']}/gem"
-node.override['passenger']['ruby_bin'] = "#{node['rsc_passenger']['ruby_path']}/ruby" 
-#node.override['passenger']['root_path']   = %x{#{node['rsc_passenger']['ruby_path']}/gem env gemdir}.chomp!+"/gems/passenger-#{node['passenger']['version']}" 
-ruby_block "update passenger root" do
-  block do
-    node.override['passenger']['root_path']   = %x{#{node[:passenger][:gem_bin]} env gemdir}.chomp!+"/gems/passenger-#{node['passenger']['version']}" 
-  end
-end
-# Convert the packages list to a Hash if any of the package has version specified.
-# See libraries/helper.php for the definition of `split_by_package_name_and_version` method.
-application_packages = RsApplicationPassenger::Helper.split_by_package_name_and_version(node['rsc_passenger']['packages'])
 
 # TODO: The database block in the rails block below doesn't accept node variables.
 # It is a known issue and will be fixed by Opscode.
 #
-database_host = node['rsc_passenger']['database']['host']
-database_user = node['rsc_passenger']['database']['user']
-database_password = node['rsc_passenger']['database']['password']
-database_schema = node['rsc_passenger']['database']['schema']
-database_adapter = node['rsc_passenger']['database']['adapter']
+database_host = node['rsc_tomcat']['database']['host']
+database_user = node['rsc_tomcat']['database']['user']
+database_password = node['rsc_tomcat']['database']['password']
+database_schema = node['rsc_tomcat']['database']['schema']
+#database_adapter = node['rsc_tomcat']['database']['adapter']
 
-node.override['apache']['listen_ports'] = [node['rsc_passenger']['listen_port']]
-# Enable Apache extended status page
-Chef::Log.info "Overriding 'apache/ext_status' to true"
-node.override['apache']['ext_status'] = true
-# Set up application
-gems = node['rsc_passenger']['gems']# if !node['rsc_passenger']['gems'].empty?
-log "Installing gems: #{gems}"
-precompile_assets = (!node['rsc_passenger']['precompile_assets'].empty? and node['rsc_passenger']['precompile_assets']=='true') ? true:false
-
-application node['rsc_passenger']['application_name'] do
-  path "/home/webapps/#{node['rsc_passenger']['application_name']}"
-  owner node['apache']['user']
-  group node['apache']['group']
-  
+application node['rsc_tomcat']['application_name'] do
+  path "/home/webapps/#{node['rsc_tomcat']['application_name']}"
+  owner node['tomcat']['user']
+  group node['tomcat']['group']
  
   
   # Configure SCM to check out application from
-  repository node['rsc_passenger']['scm']['repository']
-  revision node['rsc_passenger']['scm']['revision']
-  scm_provider node['rsc_passenger']['scm']['provider']
-  if node['rsc_passenger']['scm']['deploy_key'] && !node['rsc_passenger']['scm']['deploy_key'].empty?
-    deploy_key node['rsc_passenger']['scm']['deploy_key']
-  end
+  repository node['rsc_tomcat']['war']['path']
+  #revision node['rsc_tomcat']['war']['revision']
+  scm_provider scm_provider Chef::Provider::RemoteFile::Deploy
 
-  # Install application related packages
-  packages application_packages
-  #set the RAILS_ENV
-  environment_name node['rsc_passenger']['environment']
-   
-  # Application migration step
-  if node['rsc_passenger']['migration_command'] && !node['rsc_passenger']['migration_command'].empty?
-    migrate true
-    migration_command node['rsc_passenger']['migration_command']
-  end
 
   #Configure Rails
-  rails  do
-   gems gems
-   # bundle_options ""
-    bundler_deployment false
-    precompile_assets precompile_assets
+  java_webapp do
+
     database do
-      adapter database_adapter
-      host database_host
-      database database_schema
-      username database_user
-      password database_password
+      driver    'org.gjt.mm.mysql.Driver'
+      host      database_host
+      database  database_schema
+      username  database_user
+      password  database_password
     end
   end
 
-  # Configure Apache and mod_php to run application by creating virtual host
-  passenger_apache2 do
-    #cookbook 'rsc_passenger'
-    webapp_template 'web_app.conf.erb'
-  end
+  tomcat
  
   action :force_deploy
 end

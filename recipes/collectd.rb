@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rsc_passenger
+# Cookbook Name:: rsc_tomcat
 # Recipe:: collectd
 #
 # Copyright (C) 2014 RightScale, Inc.
@@ -21,6 +21,8 @@ marker 'recipe_start_rightscale' do
   template 'rightscale_audit_entry.erb'
 end
 
+version=node['tomcat']['base_version']
+
 chef_gem 'chef-rewind'
 require 'chef/rewind'
 
@@ -28,12 +30,12 @@ if node['rightscale'] && node['rightscale']['instance_uuid']
   node.override['collectd']['fqdn'] = node['rightscale']['instance_uuid']
 end
 
-log 'Setting up monitoring for apache...'
+log 'Setting up monitoring for tomcat...'
 
 # On CentOS the Apache collectd plugin is installed separately
-package 'collectd-apache' do
-  only_if { node['platform'] =~ /redhat|centos/ }
-end
+#package 'collectd-java' do
+#  only_if { node['platform'] =~ /redhat|centos/ }
+#end
 
 include_recipe 'collectd::default'
 
@@ -45,25 +47,17 @@ rewind 'ruby_block[delete_old_plugins]' do
   action :nothing
 end
 
-# Set up apache monitoring
-collectd_plugin 'apache' do
-  options(
-    'URL' => "http://localhost:#{node['rsc_passenger']['listen_port']}/server-status?auto"
-  )
-end
+# Installing and configuring collectd for tomcat
+  cookbook_file "#{node['tomcat']['lib_dir']}/collectd.jar" do
+    source "collectd.jar"
+    mode "0644"
+  end
 
-# Set up apache process monitoring
-cookbook_file "#{node['collectd']['plugin_dir']}/apache_ps" do
-  mode 0755
-  source 'apache_ps'
-end
 
-collectd_plugin 'apache_ps' do
-  template 'apache_ps.conf.erb'
-  cookbook 'rsc_passenger'
-  options({
-    :collectd_lib => node['collectd']['plugin_dir'],
-    :instance_uuid => node['rightscale']['instance_uuid'],
-    :apache_user => node['apache']['user']
-  })
-end
+  # Add collectd support to tomcat.conf
+  bash "Add collectd to tomcat configuration file" do
+    flags "-ex"
+    code <<-EOH
+      echo 'CATALINA_OPTS=\"\$CATALINA_OPTS -Djcd.host=#{node[:rightscale][:instance_uuid]} -Djcd.instance=tomcat#{version} -Djcd.dest=udp://#{node[:rightscale][:servers][:sketchy][:hostname]}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:#{node['tomcat']['lib_dir']}/collectd.jar\"' >> /etc/tomcat#{version}/tomcat#{version}.conf
+    EOH
+  end

@@ -3,23 +3,28 @@ Vagrant.configure("2") do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  config.vm.hostname = "rsc-passenger-berkshelf"
+  config.vm.hostname = "rsc-tomcat-berkshelf"
 
   # Every Vagrant virtual environment requires a box to build off of.   
   #config.vm.box = "opscode-ubuntu-12.04"
-  #config.vm.box = "centos6.5"
-  config.vm.box ="opscode-centos-6.5"
-
+  config.vm.box = "opscode-ubuntu-14.04"
+  #config.vm.box ="opscode-centos-6.4"
+  #config.vm.box ="opscode-centos-7.0"
+  #config.vm.box  ="opscode-debian-7.7"
+  
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  #config.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box"
-  config.vm.box_url ="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box"
+  #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.boxx"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box"
+  #config.vm.box_url ="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box"
+  #config.vm.box_url="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+  #config.vm.box_url="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box"
   
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
   # any other machines on the same network, but cannot be accessed (through this
   # network interface) by any external networks.
-  config.vm.network :private_network, ip: "33.33.33.10"
+  config.vm.network :private_network, ip: "33.33.33.10", auto_config: false
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -35,7 +40,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-   config.vm.synced_folder "~/vagrant", "/vagrant", disabled: true
+  config.vm.synced_folder "~/vagrant", "/vagrant", disabled: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -63,7 +68,7 @@ Vagrant.configure("2") do |config|
   # to exclusively install and copy to Vagrant's shelf.
   # config.berkshelf.only = []
 
-  config.omnibus.chef_version = :latest
+  config.omnibus.chef_version = '11.4.0'
 
   # An array of symbols representing groups of cookbook described in the Vagrantfile
   # to skip installing and copying to Vagrant's shelf.
@@ -85,27 +90,20 @@ Vagrant.configure("2") do |config|
         provider: 'vagrant',
         public_ips: ['33.33.33.10'],
         private_ips: ['10.0.0.1']
-        },
-      rightscale: {
-            instance_uuid:'abcdef1234'
       },
-      :rsc_ruby=>{ruby: {version: '1.9.3-p547'}},
+      rightscale: {
+        instance_uuid:'abcdef1234',
+        servers: {sketchy: {hostname: 'fpp'}}
+      },
       
-      :rsc_passenger => {
+      :rsc_tomcat => {
         :application_name => 'example',
-        :environment => 'production',
         :listen_port =>'8080',
-        :precompile_assets => 'true',
-        :gems=> ["bundler","rake"] ,
-        ruby_path: '/usr/local/bin',
         bind_network_interface: 'private',
         vhost_path: 'www.example.com',
-        :passenger =>{ version: '3.0.21'},
-        :scm => {
-          :provider => 'git',
-          :revision => 'unified_rails3',
-          :repository => 'git://github.com/cdwilhelm/examples.git'
-        },
+        war: {path: 'https://github.com/rightscale/examples/raw/unified_tomcat/ROOT.war' },
+        java: {version: '8', flavor: 'oracle'},
+        tomcat: { version: '7'},
         :database => {
           :provider => 'mysql',
           :host => 'db1.example.com',
@@ -117,8 +115,11 @@ Vagrant.configure("2") do |config|
     }
 
     chef.run_list = [
-      "recipe[rsc_ruby]",
-      "recipe[rsc_passenger::default]"
+       "recipe[apt::default]",
+      #"recipe[yum-epel]",
+      "recipe[rsc_tomcat::default]",
+      "recipe[rsc_tomcat::tags]",
+      #"recipe[rsc_tomcat::collectd]"
     ]
   end
 end

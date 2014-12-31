@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rsc_passenger
+# Cookbook Name:: rsc_tomcat
 # Recipe:: application_backend_detached
 #
 # Copyright (C) 2014 RightScale, Inc.
@@ -26,11 +26,11 @@ class Chef::Recipe
 end
 
 # Validate application name
-RsApplicationPassenger::Helper.validate_application_name(node['rsc_passenger']['application_name'])
+RsApplicationTomcat::Helper.validate_application_name(node['rsc_tomcat']['application_name'])
 
 # Put this backend out of consideration during tag queries
 log 'Tagging the application server to take it out of consideration during tag queries...'
-machine_tag "application:active_#{node['rsc_passenger']['application_name']}=false" do
+machine_tag "application:active_#{node['rsc_tomcat']['application_name']}=false" do
   action :create
 end
 
@@ -39,23 +39,23 @@ remote_request_json = '/tmp/rs-haproxy_remote_request.json'
 file remote_request_json do
   mode 0660
   content ::JSON.pretty_generate({
-    'remote_recipe' => {
-      'application_server_id' => node['rightscale']['instance_uuid'],
-      'pool_name' => node['rsc_passenger']['application_name'],
-      'application_action' => 'detach'
-    }
-  })
+      'remote_recipe' => {
+        'application_server_id' => node['rightscale']['instance_uuid'],
+        'pool_name' => node['rsc_tomcat']['application_name'],
+        'application_action' => 'detach'
+      }
+    })
 end
 
 # Send remote recipe request
-log "Running recipe '#{node['rsc_passenger']['remote_detach_recipe']}' on all load balancers" +
-" with tags 'load_balancer:active_#{node['rsc_passenger']['application_name']}=true'..."
+log "Running recipe '#{node['rsc_tomcat']['remote_detach_recipe']}' on all load balancers" +
+  " with tags 'load_balancer:active_#{node['rsc_tomcat']['application_name']}=true'..."
 
 execute 'Detach from load balancer(s)' do
   command [
     'rs_run_recipe',
-    '--name', node['rsc_passenger']['remote_detach_recipe'],
-    '--recipient_tags', "load_balancer:active_#{node['rsc_passenger']['application_name']}=true",
+    '--name', node['rsc_tomcat']['remote_detach_recipe'],
+    '--recipient_tags', "load_balancer:active_#{node['rsc_tomcat']['application_name']}=true",
     '--json', remote_request_json
   ]
 end

@@ -1,68 +1,50 @@
-name             'rsc_passenger'
+name             'rsc_tomcat'
 maintainer       'RightScale, Inc.'
 maintainer_email 'cookbooks@rightscale.com'
 license          'Apache 2.0'
-description      'Installs/Configures passenger app server'
+description      'Installs/Configures tomcat app server'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.0'
+version          '1.0.0'
 
-
-depends 'marker', '~> 1.0.0'
+depends 'yum'
+depends 'apt'
+depends 'marker', '~> 1.0.1'
 depends 'application' ,'~> 4.1.4'
-depends 'application_ruby', '~> 3.0.2'
-depends 'mysql', '~> 4.0.12'
-depends 'database', '~> 1.5.2'
-depends 'git', '~> 2.7.0'
+depends 'tomcat','0.15.12'
+depends 'application_java', '~> 3.0.0'
 depends 'collectd', '~> 1.1.0'
-depends 'rightscale_tag', '~> 1.0.2'
+depends 'rightscale_tag', '~> 1.0.5'
 
-recipe 'rsc_passenger::default', 'Installs/configures Passenger/Rails application server'
-recipe 'rsc_passenger::tags', 'Sets up application server tags used in a 3-tier deployment setup'
-recipe 'rsc_passenger::collectd', 'Sets up collectd monitoring for the application server'
-recipe 'rsc_passenger::application_backend', 'Attaches the application server to a load balancer'
-recipe 'rsc_passenger::application_backend_detached', 'Detaches the application server' +
+recipe 'rsc_tomcat::default', 'Installs/configures a tomcat application server'
+recipe 'rsc_tomcat::code_update', 'updates the application code'
+recipe 'rsc_tomcat::tags', 'Sets up application server tags used in a 3-tier deployment setup'
+recipe 'rsc_tomcat::collectd', 'Sets up collectd monitoring for the application server'
+recipe 'rsc_tomcat::application_backend', 'Attaches the application server to a load balancer'
+recipe 'rsc_tomcat::application_backend_detached', 'Detaches the application server' +
   ' from a load balancer'
 
 
-attribute 'rsc_passenger/gems',
-  :display_name => 'Additional Gems to Install',
-  :description => 'List of additional GEMS to be installed before starting the deployment.' +
-  ' Package versions can be specified. Include bundler to install gems using the Gemfile. '+ 
-  ' Example: bundler, rake',
-  :type => 'array',
-  :default=>["bundler","rake"],
-  :recipes => ['rsc_passenger::default']
 
-attribute 'rsc_passenger/listen_port',
+
+attribute 'rsc_tomcat/listen_port',
   :display_name => 'Application Listen Port',
   :description => 'The port to use for the application to bind. Example: 8080',
   :default => '8080',
   :required => 'optional',
   :recipes => [
-  'rsc_passenger::default',
-  'rsc_passenger::tags',
-  'rsc_passenger::application_backend',
+  'rsc_tomcat::default',
+  'rsc_tomcat::tags',
+  'rsc_tomcat::application_backend',
 ]
 
-attribute 'rsc_passenger/scm/repository',
-  :display_name => 'Application Repository URL',
-  :description => 'The repository location to download application code. Example: git://github.com/rightscale/examples.git',
+attribute 'rsc_tomcat/war/path',
+  :display_name => 'URL of WAR file ',
+  :description => 'URL path of WAR file to deploy',
   :required => 'required',
-  :recipes => ['rsc_passenger::default']
+  :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_passenger/scm/revision',
-  :display_name => 'Application Repository Revision',
-  :description => 'The revision of application code to download from the repository. Example: 37741af646ca4181972902432859c1c3857de742',
-  :required => 'required',
-  :recipes => ['rsc_passenger::default']
 
-attribute 'rsc_passenger/scm/deploy_key',
-  :display_name => 'Application Deploy Key',
-  :description => 'The private key to access the repository via SSH. Example: Cred:APP_DEPLOY_KEY',
-  :required => 'optional',
-  :recipes => ['rsc_passenger::default']
-
-attribute 'rsc_passenger/application_name',
+attribute 'rsc_tomcat/application_name',
   :display_name => 'Application Name',
   :description => 'The name of the application. This name is used to generate the path of the' +
   ' application code and to determine the backend pool in a load balancer server that the' +
@@ -70,51 +52,29 @@ attribute 'rsc_passenger/application_name',
   ' characters and underscores. Example: hello_world',
   :required => 'required',
   :recipes => [
-  'rsc_passenger::default',
-  'rsc_passenger::tags',
-  'rsc_passenger::application_backend',
-  'rsc_passenger::application_backend_detached',
+  'rsc_tomcat::default',
+  'rsc_tomcat::tags',
+  'rsc_tomcat::application_backend',
+  'rsc_tomcat::application_backend_detached',
 ]
-  
 
-attribute 'rsc_passenger/environment',
-  :display_name => 'Rails Env',
-  :description => 'The RailsEnv your app will run as.  ',
-  :default => 'production',
-  :choice => ['development', 'test','staging','production'],
-  :recipes => [
-  'rsc_passenger::default'
-]
-attribute 'rsc_passenger/passenger/version',
-  :display_name => 'Passenger Version',
-  :description => 'The version of Passenger to install.  Empty means install the latest version',
+attribute 'rsc_tomcat/tomcat/version',
+  :display_name => 'Tomcat Version',
+  :description => 'The version of Tomcat to install.  Empty means install the latest version',
   :required => "optional",
-  :recipes => ['rsc_passenger::default']
+  :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_passenger/ruby_path',
-  :display_name => 'Ruby Path',
-  :description => 'The path to the ruby executable',
-  :default =>'/usr/local',
-
-  :recipes => ['rsc_passenger::default']
-
-attribute 'rsc_passenger/precompile_assets',
-  :display_name => 'Precompile Assets',
-  :description => 'Precompile assets during code deploy',
-  :default => 'false',
-  :choice => ['true','false'],
-  :recipes => [  'rsc_passenger::default']
   
-attribute 'rsc_passenger/app_root',
+attribute 'rsc_tomcat/app_root',
   :display_name => 'Application Root',
   :description => 'The path of application root relative to /home/webapps/<application name> directory. Example: my_app',
   :default => '/',
   :required => 'optional',
   :recipes => [
-  'rsc_passenger::default',
-  'rsc_passenger::tags',]
+  'rsc_tomcat::default',
+  'rsc_tomcat::tags',]
   
-  attribute 'rsc_passenger/vhost_path',
+  attribute 'rsc_tomcat/vhost_path',
   :display_name => 'Virtual Host Name/Path',
   :description => 'The virtual host served by the application server. The virtual host name can be' +
     ' a valid domain/path name supported by the access control lists (ACLs) in a load balancer.' +
@@ -122,11 +82,11 @@ attribute 'rsc_passenger/app_root',
     ' application name have different vhost paths. Example: http:://www.example.com, /index',
   :required => 'required',
   :recipes => [
-    'rsc_passenger::tags',
-    'rsc_passenger::application_backend',
+    'rsc_tomcat::tags',
+    'rsc_tomcat::application_backend',
   ]
 
-attribute 'rsc_passenger/bind_network_interface',
+attribute 'rsc_tomcat/bind_network_interface',
   :display_name => 'Application Bind Network Interface',
   :description => "The network interface to use for the bind address of the application server." +
   " It can be either 'private' or 'public' interface.",
@@ -134,37 +94,52 @@ attribute 'rsc_passenger/bind_network_interface',
   :choice => ['public', 'private'],
   :required => 'optional',
   :recipes => [
-  'rsc_passenger::default',
-  'rsc_passenger::tags',
+  'rsc_tomcat::default',
+  'rsc_tomcat::tags',
 ]
 
-attribute 'rsc_passenger/migration_command',
-  :display_name => 'Application Migration Command',
-  :description => 'The command used to perform application migration. Example:rake db:migrate',
-  :requried => 'optional',
-  :recipes => ['rsc_passenger::default']
 
-attribute 'rsc_passenger/database/host',
+attribute 'rsc_tomcat/database/host',
   :display_name => 'Database Host',
   :description => 'The FQDN of the database server. Example: db.example.com',
   :default => 'localhost',
   :required => 'recommended',
-  :recipes => ['rsc_passenger::default']
+  :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_passenger/database/user',
+attribute 'rsc_tomcat/database/user',
   :display_name => 'MySQL Application Username',
   :description => 'The username used to connect to the database. Example: cred:MYSQL_APPLICATION_USERNAME',
   :required => 'recommended',
-  :recipes => ['rsc_passenger::default']
+  :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_passenger/database/password',
+attribute 'rsc_tomcat/database/password',
   :display_name => 'MySQL Application Password',
   :description => 'The password used to connect to the database. Example: cred:MYSQL_APPLICATION_PASSWORD',
   :required => 'recommended',
-  :recipes => ['rsc_passenger::default']
+  :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_passenger/database/schema',
+attribute 'rsc_tomcat/database/schema',
   :display_name => 'MySQL Database Name',
   :description => 'The schema name used to connect to the database. Example: mydb',
   :required => 'recommended',
-  :recipes => ['rsc_passenger::default']
+  :recipes => ['rsc_tomcat::default']
+
+attribute 'rsc_tomcat/java/version',
+  :display_name => 'JAVA JDK version to install',
+  :description => 'Indicate the version of JAVA JDK you want to install, Example: 7',
+  :default =>'7',
+  :required => 'optional',
+  :recipes => ['rsc_tomcat::default']
+
+attribute 'rsc_tomcat/java/flavor',
+  :display_name => 'JVM Flavor to install ',
+  :description => "Support: openjdk, Default: openjdk",
+  :choice=> ['openjdk','oracle'],
+  :required => 'required',
+  :recipes => ['rsc_tomcat::default']
+
+attribute 'rsc_tomcat/java/options',
+  :display_name => 'JAVA Options',
+  :description => "Default: -Xmx128M -Djava.awt.headless=true",
+  :required => 'recommended',
+  :recipes => ['rsc_tomcat::default']

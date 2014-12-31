@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rsc_passenger
+# Cookbook Name:: rsc_tomcat
 # Attribute:: default
 #
 # Copyright (C) 2013 RightScale, Inc.
@@ -17,67 +17,57 @@
 # limitations under the License.
 #
 
-#ruby config
-#default['passenger']['ruby_bin'] = '/usr/bin/ruby'
-#default['passenger']['root_path']   = "/usr/share/ruby/gems/1.9.1/gems/passenger-#{passenger['version']}"
-
-# Packages to install
-default['rsc_passenger']['packages'] = []
-
 # Application listen port
-default['rsc_passenger']['listen_port'] = 8080
+default['rsc_tomcat']['listen_port'] = 8080
 
 # The source control provider
-default['rsc_passenger']['scm']['provider'] = 'git'
+default['rsc_tomcat']['scm']['provider'] = 'git'
 
 # The repository to checkout the code from
-default['rsc_passenger']['scm']['repository'] = nil
+default['rsc_tomcat']['scm']['repository'] = nil
 
 # The revision of application code to checkout from the repository
-default['rsc_passenger']['scm']['revision'] = 'master'
+default['rsc_tomcat']['scm']['revision'] = 'master'
 
 # The private key to access the repository via SSH
-default['rsc_passenger']['scm']['deploy_key'] = nil
+default['rsc_tomcat']['scm']['deploy_key'] = nil
 
 # The name of the application
-default['rsc_passenger']['application_name'] = "myapp"
+default['rsc_tomcat']['application_name'] = "myapp"
 
 # The root of the application
-default['rsc_passenger']['app_root'] = '/'
-default['rsc_passenger']['precompile_assets'] = 'false'
+default['rsc_tomcat']['app_root'] = '/'
 
-# The command used to perform application migration
-#
-# @example: To import database contents from the dump file for a LAMP server, the following can be set as the
-# migration command:
-#
-#   node.override['rsc_passenger']['migration_command'] =
-#     "gunzip < #{dump_file}.sql.gz | mysql -u#{database_username} -p#{database_password} #{schema_name}"
-#
-default['rsc_passenger']['migration_command'] = nil
 
 # Database configuration
-
 # The database provider
-default['rsc_passenger']['database']['provider'] = 'mysql'
+default['rsc_tomcat']['database']['provider'] = 'mysql'
 
 # The database host
-default['rsc_passenger']['database']['host'] = 'localhost'
+default['rsc_tomcat']['database']['host'] = 'localhost'
 
 # The database username
-default['rsc_passenger']['database']['user'] = nil
+default['rsc_tomcat']['database']['user'] = nil
 
 # The database password
-default['rsc_passenger']['database']['password'] = nil
+default['rsc_tomcat']['database']['password'] = nil
 
 # The database schema name
-default['rsc_passenger']['database']['schema'] = nil
+default['rsc_tomcat']['database']['schema'] = nil
 
 # The database adapter/driver name
-default['rsc_passenger']['database']['adapter'] = 'mysql2'
+default['rsc_tomcat']['database']['adapter'] = 'mysql2'
 
 # Remote recipe to attach application server to load balancer
-default['rsc_passenger']['remote_attach_recipe'] = 'rs-haproxy::frontend'
+default['rsc_tomcat']['remote_attach_recipe'] = 'rs-haproxy::frontend'
 
 # Remote recipe to detach application server from load balancer
-default['rsc_passenger']['remote_detach_recipe'] = 'rs-haproxy::frontend'
+default['rsc_tomcat']['remote_detach_recipe'] = 'rs-haproxy::frontend'
+
+# tomcat configuration
+
+
+# java configuration
+default['rsc_tomcat']['java']['version'] = '7'
+default['rsc_tomcat']['java']['options'] = '-Xmx128M -Djava.awt.headless=true'
+default['rsc_tomcat']['java']['flavor'] = 'openjdk'
