@@ -4,13 +4,13 @@ It is based off the [application_java](https://github.com/poise/application_java
 cookbook for details on providers and additional attributes for overrides. 
 
 # OS Support
-* Centos 6.5
-* Ubuntu 12.04
 * Ubuntu 14.04
 
 # Cookbooks
-* java
-* tomcat
+the application_java and tomcat cookbooks below have been updated to support tomcat7.  
+* java 
+* application_java from rightscale-services-cookbooks/application_java, branch: ps_mods
+* tomcat from rightscale-services-cookbooks/tomcat, branch: ps_mods
 
 # Attributes
 

@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant virtual environment requires a box to build off of.   
   #config.vm.box = "opscode-ubuntu-12.04"
   config.vm.box = "opscode-ubuntu-14.04"
-  #config.vm.box ="opscode-centos-6.4"
+  #config.vm.box ="opscode-centos-6.6"
   #config.vm.box ="opscode-centos-7.0"
   #config.vm.box  ="opscode-debian-7.7"
   
@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
   # doesn't already exist on the user's system.
   #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.boxx"
   config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box"
-  #config.vm.box_url ="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box"
+  #config.vm.box_url ="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.6_chef-provisionerless.box"
   #config.vm.box_url="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
   #config.vm.box_url="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box"
   
@@ -95,7 +95,7 @@ Vagrant.configure("2") do |config|
         instance_uuid:'abcdef1234',
         servers: {sketchy: {hostname: 'fpp'}}
       },
-      
+      tomcat: {base_version: '7'},
       :rsc_tomcat => {
         :application_name => 'example',
         :listen_port =>'8080',
@@ -103,7 +103,6 @@ Vagrant.configure("2") do |config|
         vhost_path: 'www.example.com',
         war: {path: 'https://github.com/rightscale/examples/raw/unified_tomcat/ROOT.war' },
         java: {version: '8', flavor: 'oracle'},
-        tomcat: { version: '7'},
         :database => {
           :provider => 'mysql',
           :host => 'db1.example.com',

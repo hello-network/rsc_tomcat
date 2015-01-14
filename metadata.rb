@@ -10,10 +10,11 @@ depends 'yum'
 depends 'apt'
 depends 'marker', '~> 1.0.1'
 depends 'application' ,'~> 4.1.4'
-depends 'tomcat','0.15.12'
+depends 'tomcat'
 depends 'application_java', '~> 3.0.0'
 depends 'collectd', '~> 1.1.0'
 depends 'rightscale_tag', '~> 1.0.5'
+depends "yum-epel"
 
 recipe 'rsc_tomcat::default', 'Installs/configures a tomcat application server'
 recipe 'rsc_tomcat::code_update', 'updates the application code'
@@ -58,13 +59,6 @@ attribute 'rsc_tomcat/application_name',
   'rsc_tomcat::application_backend_detached',
 ]
 
-attribute 'rsc_tomcat/tomcat/version',
-  :display_name => 'Tomcat Version',
-  :description => 'The version of Tomcat to install.  Empty means install the latest version',
-  :required => "optional",
-  :recipes => ['rsc_tomcat::default']
-
-  
 attribute 'rsc_tomcat/app_root',
   :display_name => 'Application Root',
   :description => 'The path of application root relative to /home/webapps/<application name> directory. Example: my_app',
@@ -138,8 +132,20 @@ attribute 'rsc_tomcat/java/flavor',
   :required => 'required',
   :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_tomcat/java/options',
-  :display_name => 'JAVA Options',
+attribute 'tomcat/java_options',
+  :display_name => 'Tomcat JAVA Options',
   :description => "Default: -Xmx128M -Djava.awt.headless=true",
   :required => 'recommended',
+  :recipes => ['rsc_tomcat::default']
+
+attribute 'tomcat/base_version',
+  :display_name => 'Tomcat Version',
+  :description => 'The version of Tomcat to install.  Empty means install the latest version',
+  :required => "optional",
+  :recipes => ['rsc_tomcat::default']
+
+attribute 'tomcat/catalina_options',
+  :display_name => 'Tomcat Catalina Options',
+  :description => "Extra options to pass to the JVM only during start and run commands, default """,
+  :required => 'optional',
   :recipes => ['rsc_tomcat::default']

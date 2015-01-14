@@ -22,18 +22,18 @@ marker "recipe_start_rightscale" do
 end
 
 
-#include_recipe 'git'
-#include_recipe 'database::mysql'
 
 #override some attributes
 node.override['java']['install_flavor'] = node['rsc_tomcat']['java']['flavor']
 if node['rsc_tomcat']['java']['flavor']=='oracle'
   node.override['java']['oracle']['accept_oracle_download_terms']=true
 end
-node.override['java']['jdk_version']    = node['rsc_tomcat']['java']['version']
-node.override['tomcat']['java_options'] = node['rsc_tomcat']['java']['options']
-node.override['tomcat']['base_version'] = node[:rsc_tomcat][:tomcat][:version] 
 
+node.force_override['java']['jdk_version']    = node['rsc_tomcat']['java']['version']
+node.force_override['tomcat']['java_options'] = node['rsc_tomcat']['java']['options']
+node.override["tomcat"]["port"] = node["tomcat"]["listen_port"]
+
+include_recipe 'java'
 
 # TODO: The database block in the rails block below doesn't accept node variables.
 # It is a known issue and will be fixed by Opscode.
