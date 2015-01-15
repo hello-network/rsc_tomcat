@@ -10,7 +10,7 @@ depends 'yum'
 depends 'apt'
 depends 'marker', '~> 1.0.1'
 depends 'tomcat'
-depends 'application_java', '~> 3.0.0'
+depends 'application_java', '~> 3.0.2'
 depends 'collectd', '~> 1.1.0'
 depends 'rightscale_tag', '~> 1.0.5'
 depends "yum-epel"
