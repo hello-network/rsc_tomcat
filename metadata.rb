@@ -148,3 +148,10 @@ attribute 'tomcat/catalina_options',
   :description => "Extra options to pass to the JVM only during start and run commands, default """,
   :required => 'optional',
   :recipes => ['rsc_tomcat::default']
+
+attribute 'tomcat/install_method',
+  :display_name => 'method used to install tomcat. ',
+  :description => "",
+  :choice => ["package","tar"],
+  :required => 'optional',
+  :recipes => ['rsc_tomcat::default']

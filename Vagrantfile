@@ -8,6 +8,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant virtual environment requires a box to build off of.   
   #config.vm.box = "opscode-ubuntu-12.04"
   config.vm.box = "opscode-ubuntu-14.04"
+  #config.vm.box = "opscode-ubuntu-14.10"
   #config.vm.box ="opscode-centos-6.6"
   #config.vm.box ="opscode-centos-7.0"
   #config.vm.box  ="opscode-debian-7.7"
@@ -16,6 +17,8 @@ Vagrant.configure("2") do |config|
   # doesn't already exist on the user's system.
   #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.boxx"
   config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box"
+  #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.10_chef-provisionerless.box"
+ 
   #config.vm.box_url ="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.6_chef-provisionerless.box"
   #config.vm.box_url="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
   #config.vm.box_url="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box"
@@ -68,7 +71,7 @@ Vagrant.configure("2") do |config|
   # to exclusively install and copy to Vagrant's shelf.
   # config.berkshelf.only = []
 
-  config.omnibus.chef_version = '11.4.0'
+  config.omnibus.chef_version = '11.6.0'
 
   # An array of symbols representing groups of cookbook described in the Vagrantfile
   # to skip installing and copying to Vagrant's shelf.
@@ -85,7 +88,9 @@ Vagrant.configure("2") do |config|
       :vagrant => {
         :box_name => 'appserver'
       },
-      
+      'rs-base' => {
+        'collectd_server' => 'sketchy1-66.rightscale.com'
+      },
       cloud:{
         provider: 'vagrant',
         public_ips: ['33.33.33.10'],
@@ -95,7 +100,10 @@ Vagrant.configure("2") do |config|
         instance_uuid:'abcdef1234',
         servers: {sketchy: {hostname: 'fpp'}}
       },
-      tomcat: {base_version: '7'},
+      tomcat: {base_version: '8', 
+              install_method: "tar",
+              tar_version: "8.0.18"  
+      },
       :rsc_tomcat => {
         :application_name => 'example',
         :listen_port =>'8080',
@@ -114,10 +122,11 @@ Vagrant.configure("2") do |config|
     }
 
     chef.run_list = [
-       "recipe[apt::default]",
+      "recipe[apt::default]",
       #"recipe[yum-epel]",
+      #"recipe[rs-base::default]",
       "recipe[rsc_tomcat::default]",
-      "recipe[rsc_tomcat::tags]",
+      #"recipe[rsc_tomcat::tags]",
       #"recipe[rsc_tomcat::collectd]"
     ]
   end

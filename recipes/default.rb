@@ -35,7 +35,7 @@ node.override["tomcat"]["port"] = node["tomcat"]["listen_port"]
 
 include_recipe 'java'
 
-# TODO: The database block in the rails block below doesn't accept node variables.
+# TODO: The database block in the java_webapp block below doesn't accept node variables.
 # It is a known issue and will be fixed by Opscode.
 #
 database_host = node['rsc_tomcat']['database']['host']
@@ -43,6 +43,12 @@ database_user = node['rsc_tomcat']['database']['user']
 database_password = node['rsc_tomcat']['database']['password']
 database_schema = node['rsc_tomcat']['database']['schema']
 #database_adapter = node['rsc_tomcat']['database']['adapter']
+
+if node['rsc_tomcat']['war']['path'] =~ /^http/
+  provider =  Chef::Provider::RemoteFile::Deploy
+else
+  provider = Chef::Provider::File::Deploy
+end
 
 application node['rsc_tomcat']['application_name'] do
   path "/home/webapps/#{node['rsc_tomcat']['application_name']}"
@@ -53,10 +59,10 @@ application node['rsc_tomcat']['application_name'] do
   # Configure SCM to check out application from
   repository node['rsc_tomcat']['war']['path']
   #revision node['rsc_tomcat']['war']['revision']
-  scm_provider scm_provider Chef::Provider::RemoteFile::Deploy
+  scm_provider provider #Chef::Provider::RemoteFile::Deploy
 
 
-  #Configure Rails
+  #Configure Tomcat web app
   java_webapp do
 
     database do
