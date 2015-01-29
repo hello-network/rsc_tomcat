@@ -9,6 +9,7 @@ cookbook 'rightscale_tag', github: 'rightscale-cookbooks/rightscale_tag'
 cookbook 'rs-base' ,github: 'rightscale-cookbooks/rs-base'
 #cookbook 'tomcat', github: 'opscode-cookbooks/tomcat', ref: 'v0.15.12'
 cookbook 'tomcat', path: '../tomcat'
+cookbook 'hello_tomcat', path: '../../hello/hello-ops/chef/cookbooks/hello_tomcat'
 
 group :integration do
   cookbook 'apt', '~> 2.6.0'

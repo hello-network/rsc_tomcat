@@ -104,12 +104,20 @@ Vagrant.configure("2") do |config|
               install_method: "tar",
               tar_version: "8.0.18"  
       },
+      hello_tomcat: {
+        bucket: 'rightscale-hello',
+        file: 'webapps/frontend/ROOT.war',
+        #file: 'ROOT.war',
+        path: '/tmp',
+        access_key_id: 'abc',
+        secret_access_key: 'xyz',
+      },
       :rsc_tomcat => {
         :application_name => 'example',
         :listen_port =>'8080',
         bind_network_interface: 'private',
         vhost_path: 'www.example.com',
-        war: {path: 'https://github.com/rightscale/examples/raw/unified_tomcat/ROOT.war' },
+        war: {path: '/tmp/ROOT.war' },
         java: {version: '8', flavor: 'oracle'},
         :database => {
           :provider => 'mysql',
@@ -124,10 +132,11 @@ Vagrant.configure("2") do |config|
     chef.run_list = [
       "recipe[apt::default]",
       #"recipe[yum-epel]",
-      #"recipe[rs-base::default]",
+      "recipe[rs-base::default]",
+      "recipe[hello_tomcat::download_war]",
       "recipe[rsc_tomcat::default]",
-      #"recipe[rsc_tomcat::tags]",
-      #"recipe[rsc_tomcat::collectd]"
+      "recipe[rsc_tomcat::tags]",
+      "recipe[rsc_tomcat::collectd]"
     ]
   end
 end
