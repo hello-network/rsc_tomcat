@@ -156,7 +156,7 @@ attribute 'tomcat/install_method',
   :required => 'optional',
   :recipes => ['rsc_tomcat::default']
 
-attribute 'tomcat/tar_version:',
+attribute 'tomcat/tar_version',
   :display_name => 'Tomcat tar version',
   :description => "Tomcat version to install from tar",
   :required => 'optional',
