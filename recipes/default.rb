@@ -44,10 +44,17 @@ database_password = node['rsc_tomcat']['database']['password']
 database_schema = node['rsc_tomcat']['database']['schema']
 #database_adapter = node['rsc_tomcat']['database']['adapter']
 
+#decide how to get file. 
+# if the file is remote, download it and install from local path
 if node['rsc_tomcat']['war']['path'] =~ /^http/
-  provider =  Chef::Provider::RemoteFile::Deploy
+  repository= "#{Chef::Config[:file_cache_path]}/#{node['rsc_tomcat']['war']['path'].split('/').last}"
+  remote_file repository do
+    source node['rsc_tomcat']['war']['path']
+  end
+
 else
-  provider = Chef::Provider::File::Deploy
+  repository = node['rsc_tomcat']['war']['path']
+
 end
 
 application node['rsc_tomcat']['application_name'] do
@@ -57,9 +64,9 @@ application node['rsc_tomcat']['application_name'] do
  
   
   # Configure SCM to check out application from
-  repository node['rsc_tomcat']['war']['path']
+  repository repository
   #revision node['rsc_tomcat']['war']['revision']
-  scm_provider provider #Chef::Provider::RemoteFile::Deploy
+  scm_provider Chef::Provider::File::Deploy  
 
 
   #Configure Tomcat web app
