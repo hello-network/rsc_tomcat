@@ -71,7 +71,7 @@ override["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}
 override["tomcat"]["lib_dir"] = "#{node['tomcat']['home']}/lib"
 override["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
 override["tomcat"]["endorsed_dir"] = "#{node['tomcat']['lib_dir']}/endorsed"
-
+override["tomcat"]["keytool"] = "/usr/bin/keytool"
 # java configuration
 default['rsc_tomcat']['java']['version'] = '7'
 default['rsc_tomcat']['java']['options'] = '-Xmx128M -Djava.awt.headless=true'
