@@ -5,10 +5,11 @@ cookbook for details on providers and additional attributes for overrides.
 
 # OS Support
 * Ubuntu 14.04
+* Centos 6.6
 
 # Cookbooks
 the application_java and tomcat cookbooks below have been updated to support tomcat7.  
-* java 
+* java from https://github.com/agileorbit-cookbooks/java
 * application_java from rightscale-services-cookbooks/application_java, branch: ps_mods
 * tomcat from rightscale-services-cookbooks/tomcat, branch: ps_mods
 
