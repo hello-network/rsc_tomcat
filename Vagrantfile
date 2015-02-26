@@ -100,24 +100,16 @@ Vagrant.configure("2") do |config|
         instance_uuid:'abcdef1234',
         servers: {sketchy: {hostname: 'fpp'}}
       },
-      tomcat: {base_version: '8', 
-              install_method: "tar",
-              tar_version: "8.0.18"  
-      },
-      hello_tomcat: {
-        bucket: 'rightscale-hello',
-        file: 'webapps/frontend/ROOT.war',
-        #file: 'ROOT.war',
-        path: '/tmp',
-        access_key_id: 'abc',
-        secret_access_key: 'xyz',
+      tomcat: {base_version: '7', # 6 or 7
+        install_method: "package", # or "tar"
+        #tar_version: "8.0.18"  
       },
       :rsc_tomcat => {
         :application_name => 'example',
         :listen_port =>'8080',
         bind_network_interface: 'private',
         vhost_path: 'www.example.com',
-        war: {path: '/tmp/ROOT.war' },
+        war:{path: 'https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war'},
         java: {version: '8', flavor: 'oracle'},
         :database => {
           :provider => 'mysql',
@@ -125,18 +117,17 @@ Vagrant.configure("2") do |config|
           :user => 'app_user',
           :password => 'apppass',
           :schema => 'app_test'
-        }
-      }
+        },      
+      },
     }
 
     chef.run_list = [
       "recipe[apt::default]",
       #"recipe[yum-epel]",
-      "recipe[rs-base::default]",
-      "recipe[hello_tomcat::download_war]",
+      #"recipe[rs-base::default]",
       "recipe[rsc_tomcat::default]",
-      "recipe[rsc_tomcat::tags]",
-      "recipe[rsc_tomcat::collectd]"
+      #"recipe[rsc_tomcat::tags]",
+      #"recipe[rsc_tomcat::collectd]"
     ]
   end
 end
