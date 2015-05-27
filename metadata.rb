@@ -132,7 +132,7 @@ attribute 'rsc_tomcat/java/flavor',
   :required => 'required',
   :recipes => ['rsc_tomcat::default']
 
-attribute 'rsc_tomcat/java_options',
+attribute 'rsc_tomcat/java/options',
   :display_name => 'Tomcat JAVA Options',
   :description => "Default: -Xmx128M -Djava.awt.headless=true",
   :required => 'recommended',
