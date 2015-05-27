@@ -14,6 +14,7 @@ depends 'application_java', '~> 3.0.2'
 depends 'collectd', '~> 1.1.0'
 depends 'rightscale_tag', '~> 1.0.5'
 depends "yum-epel"
+depends "java"
 
 recipe 'rsc_tomcat::default', 'Installs/configures a tomcat application server'
 recipe 'rsc_tomcat::code_update', 'updates the application code'
