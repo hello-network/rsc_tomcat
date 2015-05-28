@@ -31,7 +31,7 @@ end
 
 node.force_override['java']['jdk_version']    = node['rsc_tomcat']['java']['version']
 node.force_override['tomcat']['java_options'] = node['rsc_tomcat']['java']['options']
-node.override["tomcat"]["port"] = node["tomcat"]["listen_port"]
+node.override['tomcat']['port'] = node['tomcat']['listen_port']
 
 include_recipe 'java'
 

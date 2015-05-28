@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@rightscale.com'
 license          'Apache 2.0'
 description      'Installs/Configures tomcat app server'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.2.0'
+version          '1.2.1'
 
 depends 'yum'
 depends 'apt'
@@ -14,6 +14,7 @@ depends 'application_java', '~> 3.0.2'
 depends 'collectd', '~> 1.1.0'
 depends 'rightscale_tag', '~> 1.0.5'
 depends "yum-epel"
+depends "java"
 
 recipe 'rsc_tomcat::default', 'Installs/configures a tomcat application server'
 recipe 'rsc_tomcat::code_update', 'updates the application code'
@@ -131,7 +132,7 @@ attribute 'rsc_tomcat/java/flavor',
   :required => 'required',
   :recipes => ['rsc_tomcat::default']
 
-attribute 'tomcat/java_options',
+attribute 'rsc_tomcat/java/options',
   :display_name => 'Tomcat JAVA Options',
   :description => "Default: -Xmx128M -Djava.awt.headless=true",
   :required => 'recommended',
