@@ -14,7 +14,23 @@ the application_java and tomcat cookbooks below have been updated to support tom
 * tomcat from rightscale-services-cookbooks/tomcat, branch: ps_mods
 
 # Attributes
-
+* `node['rsc_tomcat']['listen_port']` - 'The port to use for the application to bind. Example: 8080'
+* `node['rsc_tomcat']['war']['path']` - 'URL of WAR file '
+* `node['rsc_tomcat']['application_name']` - 'The name of the application.'
+* `node['rsc_tomcat']['app_root']` - 'Application Root'
+* `node['rsc_tomcat']['vhost_path']` - 'Virtual Host Name/Path'
+* `node['rsc_tomcat']['bind_network_interface']` - 'Application Bind Network Interface'
+* `node['rsc_tomcat']['database']['host']` - 'Database Host'
+* `node['rsc_tomcat']['database']['user']` - 'MySQL Application Username'
+* `node['rsc_tomcat']['database']['password']` - 'MySQL Application Password'
+* `node['rsc_tomcat']['database']['schema']` - 'MySQL Database Name'
+* `node['rsc_tomcat']['java']['version']` - 'JAVA JDK version to install'
+* `node['rsc_tomcat']['java']['flavor']` - 'JVM Flavor to install '
+* `node['rsc_tomcat']['java']['options']` - 'Tomcat JAVA Options'
+* `node['tomcat']['base_version']` - Tomcat Version
+* `node['tomcat']['catalina_options']` - 'Tomcat Catalina Options'
+* `node['tomcat']['install_method']` -  'method used to install tomcat. '
+* `node['tomcat']['tar_version']` - 'Tomcat Tar Version'
 
 
 # Recipes
