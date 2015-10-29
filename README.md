@@ -41,5 +41,12 @@ rsc_tomcat::application_backend - Attaches to the load balancer
 rsc_tomcat::applicaton_backend_detach - Detaches to the load balancer
 rsc_tomcat::collectd - setup monitoring using collectd
 
+# Testing
+The test suite is kitchen for centos 6.5, cento 7.1 ubunut 12.04, ubuntu 14.04
+
+* gem install bundle
+* bundle 
+* bundle exec kitchen test
+
 # Author
 Author:: RightScale, Inc. (<ps@rightscale.com>)
