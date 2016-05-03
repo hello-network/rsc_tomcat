@@ -16,6 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+default['apt']['compile_time_update'] = true
+default['build-essential']['compile_time'] = true
+
+# Default Listen Interface
+default['rsc_tomcat']['bind_network_interface'] = 'private'
 
 # Application listen port
 default['rsc_tomcat']['listen_port'] = 8080

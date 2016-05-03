@@ -14,7 +14,4 @@ cookbook 'tomcat', github: 'rightscale-services-cookbooks/tomcat', ref: 'ps_mods
 group :integration do
   cookbook 'apt', '~> 2.9.2'
   cookbook 'yum-epel', '~> 0.6.6'
- # cookbook 'curl', '~> 1.1.0'
- # cookbook 'fake', path: './test/cookbooks/fake'
- # cookbook 'rhsm', '~> 1.0.0'
 end
