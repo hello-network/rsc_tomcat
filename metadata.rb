@@ -8,6 +8,7 @@ version          '1.3.0'
 
 depends 'yum', '~> 3.10.0'
 depends 'apt', '~> 2.9.2'
+depends 'build-essential', '~> 3.2.0'
 depends 'marker', '~> 1.0.1'
 depends 'tomcat', '~> 0.18.3'
 depends 'application_java', '~> 3.0.2'
