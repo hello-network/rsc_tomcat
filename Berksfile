@@ -9,6 +9,7 @@ cookbook 'rightscale_tag', github: 'rightscale-cookbooks/rightscale_tag', branch
 cookbook 'machine_tag', github: 'rightscale-cookbooks/machine_tag', branch: 'v1.2.1'
 cookbook 'rs-base', github: 'rightscale-cookbooks/rs-base', branch: 'upgrade-rightscale-tag'
 cookbook 'tomcat', github: 'rightscale-services-cookbooks/tomcat', ref: 'ps_mods'
+cookbook 'rsc_remote_recipe', github: 'rightscale-services-cookbooks/rsc_remote_recipe', tag: 'v10.0.1'
 #cookbook 'tomcat', path: '../tomcat'
 
 group :integration do

@@ -17,6 +17,7 @@ depends 'rightscale_tag', '~> 1.2.1'
 depends 'machine_tag', '~> 1.2.1'
 depends 'yum-epel', '~> 0.6.6'
 depends 'java', '~> 1.39.0'
+depends 'rsc_remote_recipe', '~> 10.0.0'
 
 recipe 'rsc_tomcat::default', 'Installs/configures a tomcat application server'
 recipe 'rsc_tomcat::code_update', 'updates the application code'
