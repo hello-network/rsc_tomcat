@@ -21,7 +21,9 @@ marker "recipe_start_rightscale" do
   template "rightscale_audit_entry.erb"
 end
 
-
+#including defaults
+include_recipe 'apt'
+include_recipe 'build-essential'
 
 #override some attributes
 node.override['java']['install_flavor'] = node['rsc_tomcat']['java']['flavor']

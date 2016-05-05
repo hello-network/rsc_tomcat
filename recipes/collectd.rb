@@ -58,6 +58,6 @@ end
   bash "Add collectd to tomcat configuration file" do
     flags "-ex"
     code <<-EOH
-      echo 'CATALINA_OPTS=\"\$CATALINA_OPTS -Djcd.host=#{node['rightscale']['instance_uuid']} -Djcd.instance=tomcat#{version} -Djcd.dest=udp://#{node['rightscale']['servers']['sketchy']['hostname']}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:#{node['tomcat']['lib_dir']}/collectd.jar\"' >> /etc/tomcat#{version}/tomcat#{version}.conf
+      echo 'CATALINA_OPTS=\"\$CATALINA_OPTS -Djcd.host=#{node['rightscale']['instance_uuid']} -Djcd.instance=tomcat#{version} -Djcd.dest=udp://#{node['rightscale']['sketchy']}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:#{node['tomcat']['lib_dir']}/collectd.jar\"' >> /etc/tomcat#{version}/tomcat#{version}.conf
     EOH
   end

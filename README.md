@@ -1,7 +1,8 @@
 # rsc_tomcat cookbook
-This cookbook is designed to work with RightScale ServerTemplates using the v14 lineage.
-It is based off the [application_java](https://github.com/poise/application_java).  See that 
-cookbook for details on providers and additional attributes for overrides. 
+This cookbook is designed to work with RightLink 10, and Chef Server as of version 1.3.0.
+Previous versions worked with the v14 server template, but 1.3.0 is a new version for chef server.
+It is based off the [application_java](https://github.com/poise/application_java).  See that
+cookbook for details on providers and additional attributes for overrides.
 
 # OS Support
 * Ubuntu 14.04
