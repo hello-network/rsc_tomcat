@@ -3,8 +3,7 @@ site :opscode
 metadata
 
 cookbook 'collectd', github: 'rightscale-cookbooks-contrib/chef-collectd', branch: 'generalize_install_for_both_centos_and_ubuntu'
-cookbook 'application_java', github: 'rightscale-services-cookbooks/application_java', ref: 'ps_mods'
-#cookbook 'application_java', path: '../application_java' #github: 'opscode-cookbooks/tomcat', ref: 'v0.15.12'
+cookbook 'application_java', github: 'rightscale-services-cookbooks/application_java', ref: 'v3.0.4'
 cookbook 'rightscale_tag', github: 'rightscale-cookbooks/rightscale_tag', branch: 'v1.2.1'
 cookbook 'machine_tag', github: 'rightscale-cookbooks/machine_tag', branch: 'v1.2.1'
 cookbook 'rs-base', github: 'rightscale-cookbooks/rs-base', branch: 'upgrade-rightscale-tag'
