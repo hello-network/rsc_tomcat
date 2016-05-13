@@ -4,6 +4,9 @@ Previous versions worked with the v14 server template, but 1.3.0 is a new versio
 It is based off the [application_java](https://github.com/poise/application_java).  See that
 cookbook for details on providers and additional attributes for overrides.
 
+# Chef
+- Support Chef 11.6 or later.
+
 # OS Support
 * Ubuntu 14.04
 * Centos 6.6
