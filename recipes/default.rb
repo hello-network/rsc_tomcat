@@ -60,7 +60,7 @@ else
 end
 
 application node['rsc_tomcat']['application_name'] do
-  path "/home/webapps/#{node['rsc_tomcat']['application_name']}"
+  path "#{node['rsc_tomcat']['app_root']}/#{node['rsc_tomcat']['application_name']}"
   owner node['tomcat']['user']
   group node['tomcat']['group']
  
