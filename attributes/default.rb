@@ -41,7 +41,7 @@ default['rsc_tomcat']['scm']['deploy_key'] = nil
 default['rsc_tomcat']['application_name'] = "myapp"
 
 # The root of the application
-default['rsc_tomcat']['app_root'] = '/'
+default['rsc_tomcat']['app_root'] = '/home/webapps'
 
 
 # Database configuration

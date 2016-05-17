@@ -21,7 +21,7 @@ the application_java and tomcat cookbooks below have been updated to support tom
 * `node['rsc_tomcat']['listen_port']` - 'The port to use for the application to bind. Example: 8080'
 * `node['rsc_tomcat']['war']['path']` - 'URL of WAR file '
 * `node['rsc_tomcat']['application_name']` - 'The name of the application.'
-* `node['rsc_tomcat']['app_root']` - 'Application Root'
+* `node['rsc_tomcat']['app_root']` - 'Application Root' default: /home/webapps
 * `node['rsc_tomcat']['vhost_path']` - 'Virtual Host Name/Path'
 * `node['rsc_tomcat']['bind_network_interface']` - 'Application Bind Network Interface'
 * `node['rsc_tomcat']['database']['host']` - 'Database Host'
