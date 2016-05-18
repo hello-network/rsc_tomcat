@@ -59,9 +59,13 @@ default['rsc_tomcat']['database']['password'] = nil
 
 # The database schema name
 default['rsc_tomcat']['database']['schema'] = nil
+default['rsc_tomcat']['database']['port']=3306
+default['rsc_tomcat']['database']['max_active']=100
+default['rsc_tomcat']['database']['max_idle']=100
+default['rsc_tomcat']['database']['max_wait']=30000
 
 # The database adapter/driver name
-default['rsc_tomcat']['database']['adapter'] = 'mysql2'
+default['rsc_tomcat']['database']['adapter'] = 'org.gjt.mm.mysql.Driver'
 
 # Remote recipe to attach application server to load balancer
 default['rsc_tomcat']['remote_attach_recipe'] = 'rs-haproxy::frontend'
