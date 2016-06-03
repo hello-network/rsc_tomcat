@@ -3,13 +3,13 @@
 # Recipe:: default
 #
 # Copyright (C) 2014 RightScale, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #    http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,9 +44,13 @@ database_host = node['rsc_tomcat']['database']['host']
 database_user = node['rsc_tomcat']['database']['user']
 database_password = node['rsc_tomcat']['database']['password']
 database_schema = node['rsc_tomcat']['database']['schema']
-#database_adapter = node['rsc_tomcat']['database']['adapter']
+database_port = node['rsc_tomcat']['database']['port']
+database_max_active = node['rsc_tomcat']['database']['max_active']
+database_max_idle = node['rsc_tomcat']['database']['max_idle']
+database_max_wait = node['rsc_tomcat']['database']['max_wait']
+database_adapter = node['rsc_tomcat']['database']['adapter']
 
-#decide how to get file. 
+#decide how to get file.
 # if the file is remote, download it and install from local path
 if node['rsc_tomcat']['war']['path'] =~ /^http/
   repository= "#{Chef::Config[:file_cache_path]}/#{node['rsc_tomcat']['war']['path'].split('/').last}"
@@ -63,27 +67,31 @@ application node['rsc_tomcat']['application_name'] do
   path "#{node['rsc_tomcat']['app_root']}/#{node['rsc_tomcat']['application_name']}"
   owner node['tomcat']['user']
   group node['tomcat']['group']
- 
-  
+
+
   # Configure SCM to check out application from
   repository repository
   #revision node['rsc_tomcat']['war']['revision']
-  scm_provider Chef::Provider::File::Deploy  
+  scm_provider Chef::Provider::File::Deploy
 
 
   #Configure Tomcat web app
   java_webapp do
 
     database do
-      driver    'org.gjt.mm.mysql.Driver'
-      host      database_host
-      database  database_schema
-      username  database_user
-      password  database_password
+      driver     database_adapter
+      host       database_host
+      database   database_schema
+      username   database_user
+      password   database_password
+      port 	     database_port
+      max_active database_max_active
+      max_idle   database_max_idle
+      max_wait   database_max_wait
     end
   end
 
   tomcat
- 
+
   action :force_deploy
 end
