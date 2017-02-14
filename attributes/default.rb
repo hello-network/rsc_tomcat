@@ -38,11 +38,10 @@ default['rsc_tomcat']['scm']['revision'] = 'master'
 default['rsc_tomcat']['scm']['deploy_key'] = nil
 
 # The name of the application
-default['rsc_tomcat']['application_name'] = "myapp"
+default['rsc_tomcat']['application_name'] = 'myapp'
 
 # The root of the application
 default['rsc_tomcat']['app_root'] = '/home/webapps'
-
 
 # Database configuration
 # The database provider
@@ -59,10 +58,10 @@ default['rsc_tomcat']['database']['password'] = nil
 
 # The database schema name
 default['rsc_tomcat']['database']['schema'] = nil
-default['rsc_tomcat']['database']['port']=3306
-default['rsc_tomcat']['database']['max_active']=100
-default['rsc_tomcat']['database']['max_idle']=100
-default['rsc_tomcat']['database']['max_wait']=30000
+default['rsc_tomcat']['database']['port'] = 3306
+default['rsc_tomcat']['database']['max_active'] = 100
+default['rsc_tomcat']['database']['max_idle'] = 100
+default['rsc_tomcat']['database']['max_wait'] = 30_000
 
 # The database adapter/driver name
 default['rsc_tomcat']['database']['adapter'] = 'org.gjt.mm.mysql.Driver'
@@ -75,12 +74,12 @@ default['rsc_tomcat']['remote_detach_recipe'] = 'rs-haproxy::frontend'
 
 # tomcat configuration
 
-override["tomcat"]["base"] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
-override["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
-override["tomcat"]["lib_dir"] = "#{node['tomcat']['home']}/lib"
-override["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
-override["tomcat"]["endorsed_dir"] = "#{node['tomcat']['lib_dir']}/endorsed"
-override["tomcat"]["keytool"] = "/usr/bin/keytool"
+override['tomcat']['base'] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
+override['tomcat']['home'] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
+override['tomcat']['lib_dir'] = "#{node['tomcat']['home']}/lib"
+override['tomcat']['config_dir'] = "/etc/tomcat#{node['tomcat']['base_version']}"
+override['tomcat']['endorsed_dir'] = "#{node['tomcat']['lib_dir']}/endorsed"
+override['tomcat']['keytool'] = '/usr/bin/keytool'
 # java configuration
 default['rsc_tomcat']['java']['version'] = '7'
 default['rsc_tomcat']['java']['options'] = '-Xmx128M -Djava.awt.headless=true'

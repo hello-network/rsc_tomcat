@@ -21,7 +21,7 @@ marker 'recipe_start_rightscale' do
   template 'rightscale_audit_entry.erb'
 end
 
-version=node['tomcat']['base_version']
+version = node['tomcat']['base_version']
 
 chef_gem 'chef-rewind'
 require 'chef/rewind'
@@ -33,9 +33,9 @@ end
 log 'Setting up monitoring for tomcat...'
 
 # On CentOS the Apache collectd plugin is installed separately
-#package 'collectd-java' do
+# package 'collectd-java' do
 #  only_if { node['platform'] =~ /redhat|centos/ }
-#end
+# end
 
 include_recipe 'collectd::default'
 
@@ -48,16 +48,15 @@ rewind 'ruby_block[delete_old_plugins]' do
 end
 
 # Installing and configuring collectd for tomcat
-  cookbook_file "#{node['tomcat']['lib_dir']}/collectd.jar" do
-    source "collectd.jar"
-    mode "0644"
-  end
+cookbook_file "#{node['tomcat']['lib_dir']}/collectd.jar" do
+  source 'collectd.jar'
+  mode '0644'
+end
 
-
-  # Add collectd support to tomcat.conf
-  bash "Add collectd to tomcat configuration file" do
-    flags "-ex"
-    code <<-EOH
+# Add collectd support to tomcat.conf
+bash 'Add collectd to tomcat configuration file' do
+  flags '-ex'
+  code <<-EOH
       echo 'CATALINA_OPTS=\"\$CATALINA_OPTS -Djcd.host=#{node['rightscale']['instance_uuid']} -Djcd.instance=tomcat#{version} -Djcd.dest=udp://#{node['rightscale']['sketchy']}:3011 -Djcd.tmpl=javalang,tomcat -javaagent:#{node['tomcat']['lib_dir']}/collectd.jar\"' >> /etc/tomcat#{version}/tomcat#{version}.conf
     EOH
-  end
+end

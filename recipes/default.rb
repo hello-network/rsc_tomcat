@@ -17,18 +17,18 @@
 # limitations under the License.
 #
 
-marker "recipe_start_rightscale" do
-  template "rightscale_audit_entry.erb"
+marker 'recipe_start_rightscale' do
+  template 'rightscale_audit_entry.erb'
 end
 
-#including defaults
+# including defaults
 include_recipe 'apt'
 include_recipe 'build-essential'
 
-#override some attributes
+# override some attributes
 node.override['java']['install_flavor'] = node['rsc_tomcat']['java']['flavor']
-if node['rsc_tomcat']['java']['flavor']=='oracle'
-  node.override['java']['oracle']['accept_oracle_download_terms']=true
+if node['rsc_tomcat']['java']['flavor'] == 'oracle'
+  node.override['java']['oracle']['accept_oracle_download_terms'] = true
 end
 
 node.force_override['java']['jdk_version']    = node['rsc_tomcat']['java']['version']
@@ -50,10 +50,10 @@ database_max_idle = node['rsc_tomcat']['database']['max_idle']
 database_max_wait = node['rsc_tomcat']['database']['max_wait']
 database_adapter = node['rsc_tomcat']['database']['adapter']
 
-#decide how to get file.
+# decide how to get file.
 # if the file is remote, download it and install from local path
 if node['rsc_tomcat']['war']['path'] =~ /^http/
-  repository= "#{Chef::Config[:file_cache_path]}/#{node['rsc_tomcat']['war']['path'].split('/').last}"
+  repository = "#{Chef::Config[:file_cache_path]}/#{node['rsc_tomcat']['war']['path'].split('/').last}"
   remote_file repository do
     source node['rsc_tomcat']['war']['path']
   end
@@ -68,16 +68,13 @@ application node['rsc_tomcat']['application_name'] do
   owner node['tomcat']['user']
   group node['tomcat']['group']
 
-
   # Configure SCM to check out application from
   repository repository
-  #revision node['rsc_tomcat']['war']['revision']
+  # revision node['rsc_tomcat']['war']['revision']
   scm_provider Chef::Provider::File::Deploy
 
-
-  #Configure Tomcat web app
+  # Configure Tomcat web app
   java_webapp do
-
     database do
       driver     database_adapter
       host       database_host

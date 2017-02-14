@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+- 2.3.1
+before_install:
+- curl -L https://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk -v 1.0.3
+- gem install bundler -v 1.11.2
+install:
+- chef exec bundle install --jobs=3 --retry=3
+before_script: chef exec rake setup_test_environment
+script: "./.travis_install.sh"
+notifications:
+  slack:
+    secure: aDuEKuNP3a/xYFofTJ78W7BXaJkZQqBVlajawf3aonZkQY4k+nVoPPA0a+ejZ36u7nsV3VQL+AHGY/Impme7B/hfSIGhNmoLOxjzmlFw+spca0K3D7jio3LM30IQ5x7Y9gZ2MgUa0SSCRH9AY/UIRkCW/rzekKrKjxjX7t5z2zM=

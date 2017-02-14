@@ -1,25 +1,35 @@
 ---
 driver_plugin: vagrant
+
 driver_config:
-  require_chef_omnibus: '11.6'
+  require_chef_omnibus: 12.16
+  customize:
+    cpus: 1
+    memory: 512
+  ssh:
+    insert_key: false
+
+provisioner:
+  name: chef_zero
+  always_update_cookbooks: true
 
 platforms:
-- name: centos-6.5
-  run_list: ['recipe[yum-epel]']
+- name: centos-6.8
+  run_list: ['fake::install_rightscale_epel']
   driver_config:
-    box: opscode-centos-6.5
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
-    customize:
-      cpus: 2
-      memory: 1024
+    box: bento/centos-6.8
+- name: centos-7.2
+  run_list: ['fake::install_rightscale_epel']
+  driver_config:
+    box: bento/centos-7.2
+- name: ubuntu-12.04
+  run_list: ['recipe[apt]']
+  driver_config:
+    box: bento/ubuntu-12.04
 - name: ubuntu-14.04
   run_list: ['recipe[apt]']
   driver_config:
-    box: opscode-ubuntu-14.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
-    customize:
-      cpus: 2
-      memory: 1024
+    box: bento/ubuntu-14.04
 
 suites:
 - name: default

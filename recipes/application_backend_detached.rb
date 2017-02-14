@@ -16,14 +16,13 @@ machine_tag "application:active_#{node['rsc_tomcat']['application_name']}=false"
 end
 
 # Send remote recipe request
-log "Running recipe '#{node['rsc_tomcat']['remote_detach_recipe']}' on all load balancers" +
-" with tags 'load_balancer:active_#{node['rsc_tomcat']['application_name']}=true'..."
+log "Running recipe '#{node['rsc_tomcat']['remote_detach_recipe']}' on all load balancers" \
+    " with tags 'load_balancer:active_#{node['rsc_tomcat']['application_name']}=true'..."
 
-remote_recipe "HAProxy Frontend - chef" do
+remote_recipe 'HAProxy Frontend - chef' do
   tags "load_balancer:active_#{node['rsc_tomcat']['application_name']}=true"
-  attributes( {
-      'APPLICATION_SERVER_ID' => "text:#{node['rightscale']['instance_uuid']}",
-      'POOL_NAME' => "text:#{node['rsc_tomcat']['application_name']}",
-      'APPLICATION_ACTION' => "text:detach"})
+  attributes('APPLICATION_SERVER_ID' => "text:#{node['rightscale']['instance_uuid']}",
+             'POOL_NAME' => "text:#{node['rsc_tomcat']['application_name']}",
+             'APPLICATION_ACTION' => 'text:detach')
   action :run
 end
