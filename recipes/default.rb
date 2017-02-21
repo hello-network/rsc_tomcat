@@ -31,8 +31,8 @@ if node['rsc_tomcat']['java']['flavor'] == 'oracle'
   node.override['java']['oracle']['accept_oracle_download_terms'] = true
 end
 
-node.force_override['java']['jdk_version']    = node['rsc_tomcat']['java']['version']
-node.force_override['tomcat']['java_options'] = node['rsc_tomcat']['java']['options']
+node.override['java']['jdk_version'] = node['rsc_tomcat']['java']['version']
+node.override['tomcat']['java_options'] = node['rsc_tomcat']['java']['options']
 node.override['tomcat']['port'] = node['tomcat']['listen_port']
 
 include_recipe 'java'
