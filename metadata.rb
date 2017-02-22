@@ -12,7 +12,7 @@ chef_version     '>= 12.0' if respond_to?(:chef_version)
 depends 'yum'
 depends 'apt'
 depends 'build-essential'
-depends 'tomcat', '~> 2.0.0'
+depends 'tomcat', '~> 2.0'
 depends 'application_java', '~> 3.0.0'
 depends 'collectd'
 depends 'rightscale_tag', '~> 2.0.0'
