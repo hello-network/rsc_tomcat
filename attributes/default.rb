@@ -64,7 +64,7 @@ default['rsc_tomcat']['database']['max_idle'] = 100
 default['rsc_tomcat']['database']['max_wait'] = 30_000
 
 # The database adapter/driver name
-default['rsc_tomcat']['database']['adapter'] = 'org.gjt.mm.mysql.Driver'
+default['rsc_tomcat']['database']['driver'] = 'org.gjt.mm.mysql.Driver'
 
 # Remote recipe to attach application server to load balancer
 default['rsc_tomcat']['remote_attach_recipe'] = 'rs-haproxy::frontend'
@@ -72,14 +72,14 @@ default['rsc_tomcat']['remote_attach_recipe'] = 'rs-haproxy::frontend'
 # Remote recipe to detach application server from load balancer
 default['rsc_tomcat']['remote_detach_recipe'] = 'rs-haproxy::frontend'
 
+# context template source, use override to use context from another cookbook
+default['rsc_tomcat']['context_template']='context.xml.erb'
+default['rsc_tomcat']['cookbook']='rsc_tomcat'
 # tomcat configuration
 
-override['tomcat']['base'] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
-override['tomcat']['home'] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
-override['tomcat']['lib_dir'] = "#{node['tomcat']['home']}/lib"
-override['tomcat']['config_dir'] = "/etc/tomcat#{node['tomcat']['base_version']}"
-override['tomcat']['endorsed_dir'] = "#{node['tomcat']['lib_dir']}/endorsed"
-override['tomcat']['keytool'] = '/usr/bin/keytool'
+default['rsc_tomcat']['version'] = "8.0.36"
+default['rsc_tomcat']['home'] = "/opt/tomcat"
+
 # java configuration
 default['rsc_tomcat']['java']['version'] = '7'
 default['rsc_tomcat']['java']['options'] = '-Xmx128M -Djava.awt.headless=true'
