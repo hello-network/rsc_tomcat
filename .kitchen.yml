@@ -55,7 +55,7 @@ suites:
         provider:  'mysql'
         host: 'db1.example.com'
         user: 'app_user'
-        password: 'apppass'
+        password: 'app_pass'
         schema: 'app_test'
     rightscale:
       instance_uuid: '1111111'
@@ -87,7 +87,7 @@ suites:
         provider:  'mysql'
         host: 'db1.example.com'
         user: 'app_user'
-        password: 'apppass'
+        password: 'app_pass'
         schema: 'app_test'
     rightscale:
       instance_uuid: '1111111'

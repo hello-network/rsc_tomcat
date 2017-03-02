@@ -1,21 +1,19 @@
 # rsc_tomcat cookbook
 This cookbook is designed to work with RightLink 10, and Chef Server as of version 1.3.0.
 Previous versions worked with the v14 server template, but 1.3.0 is a new version for chef server.
-It is based off the [application_java](https://github.com/poise/application_java).  See that
-cookbook for details on providers and additional attributes for overrides.
 
 # Chef
-- Support Chef 11.6 or later.
+- Support Chef 12 or later.
 
 # OS Support
-* Ubuntu 14.04
-* Centos 6.6
+* Ubuntu 14.04, 16.04
+* Centos 6.8, 7.2
 
 # Cookbooks
 the application_java and tomcat cookbooks below have been updated to support tomcat7.  
-* java from https://github.com/agileorbit-cookbooks/java
-* application_java from rightscale-services-cookbooks/application_java, branch: ps_mods
-* tomcat from rightscale-services-cookbooks/tomcat, branch: ps_mods
+* [java](https://github.com/agileorbit-cookbooks/java)
+* [rsc_remote_recipe](https://github.com/rightscale-services-cookbooks/rsc_remote_recipe)
+* [rsc_ros](https://github.com/rightscale-services-cookbooks/rsc_ros)
 
 # Attributes
 * `node['rsc_tomcat']['listen_port']` - 'The port to use for the application to bind. Example: 8080'
@@ -35,10 +33,9 @@ the application_java and tomcat cookbooks below have been updated to support tom
 * `node['rsc_tomcat']['java']['version']` - 'JAVA JDK version to install'
 * `node['rsc_tomcat']['java']['flavor']` - 'JVM Flavor to install '
 * `node['rsc_tomcat']['java']['options']` - 'Tomcat JAVA Options'
-* `node['tomcat']['base_version']` - Tomcat Version
-* `node['tomcat']['catalina_options']` - 'Tomcat Catalina Options'
-* `node['tomcat']['install_method']` -  'method used to install tomcat. '
-* `node['tomcat']['tar_version']` - 'Tomcat Tar Version'
+* `node['rsc_tomcat']['version']` - Tomcat Version
+* `node['rsc_tomcat']['home']` - Tomcat Install Location
+* `node['rsc_tomcat']['catalina_options']` - 'Tomcat Catalina Options'
 
 
 # Recipes
@@ -47,10 +44,9 @@ rsc_tomcat::tags - Adds the RightScale Tags to the Instance for the load balance
 and attach
 rsc_tomcat::application_backend - Attaches to the load balancer
 rsc_tomcat::applicaton_backend_detach - Detaches to the load balancer
-rsc_tomcat::collectd - setup monitoring using collectd
 
 # Testing
-The test suite is kitchen for centos 6.5, cento 7.1 ubunut 12.04, ubuntu 14.04
+The test suite is kitchen for centos 6.8, cento 7.2 ubunut 14.04, ubuntu 16.04
 
 * gem install bundle
 * bundle

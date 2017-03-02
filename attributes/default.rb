@@ -79,6 +79,7 @@ default['rsc_tomcat']['cookbook']='rsc_tomcat'
 
 default['rsc_tomcat']['version'] = "8.0.36"
 default['rsc_tomcat']['home'] = "/opt/tomcat"
+default["rsc_tomcat"]["catalina_options"]=""
 
 # java configuration
 default['rsc_tomcat']['java']['version'] = '7'
