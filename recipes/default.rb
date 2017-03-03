@@ -33,6 +33,7 @@ end
 node.override['java']['jdk_version'] = node['rsc_tomcat']['java']['version']
 
 include_recipe 'java'
+include_recipe 'rsc_ros'
 
 user "tomcat"
 group "tomcat" do
@@ -71,11 +72,18 @@ end
 
 #download file and place it in the webapps dir
 if !node['rsc_tomcat']['war']['path'].empty? && node['rsc_tomcat']['war']['path'] =~ /^http/
-  remote_file "#{node["rsc_tomcat"]["home"]}/webapps/#{node['rsc_tomcat']['war']['path'].split('/').last}" do
-    source node['rsc_tomcat']['war']['path']
-    owner "tomcat"
-    group "tomcat"
-  end
+
+rsc_ros "" do
+  storage_provider node['rsc_ros']["provider"]
+  access_key node["rsc_ros"]['access_key']
+  secret_key
+  bucket
+  file
+  destination
+  destination
+  action :download
+end
+
 end
 
 # install and start the tomcat service

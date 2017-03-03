@@ -20,6 +20,7 @@ depends 'yum-epel'
 depends 'java'
 depends 'rsc_remote_recipe', '~> 10.1.0'
 depends 'rs-base', '~> 2.0.0'
+depends 'rsc_ros'
 
 recipe 'rsc_tomcat::default', 'Installs/configures a tomcat application server'
 recipe 'rsc_tomcat::code_update', 'updates the application code'

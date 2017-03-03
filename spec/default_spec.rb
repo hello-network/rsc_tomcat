@@ -17,6 +17,7 @@ describe 'rsc_tomcat::default' do
   it 'includes install recipe' do
     expect(chef_run).to include_recipe('build-essential')
     expect(chef_run).to include_recipe('java')
+    expect(chef_run).to include_recipe('rsc_ros')
   end
 
   it 'adds tomcat user' do
@@ -40,7 +41,7 @@ describe 'rsc_tomcat::default' do
   end
 
   it "downloads war file" do
-    expect(chef_run).to create_remote_file('/opt/tomcat/webapps/sample.war')
+    expect(chef_run).to download_rsc_ros('/opt/tomcat/webapps/sample.war')
   end
 
   it "enable tomcat service" do
@@ -50,5 +51,6 @@ describe 'rsc_tomcat::default' do
   it "start tomcat service" do
     expect(chef_run).to start_tomcat_service('default')
   end
+
 
 end
