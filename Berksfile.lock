@@ -1,7 +1,7 @@
 DEPENDENCIES
   machine_tag
     git: https://github.com/rightscale-cookbooks/machine_tag.git
-    revision: e3b01e6e3af364ce2ee73a28445f08c833a2ac3f
+    revision: 07f504ff554534e41099019fc911b3ea1dd8382c
   marker
     git: https://github.com/rightscale-cookbooks/marker.git
     revision: 058e70879408fceceb628c600d487b1ddfa06cdb
@@ -15,7 +15,7 @@ DEPENDENCIES
     branch: master
   rsc_remote_recipe
     git: https://github.com/rightscale-services-cookbooks/rsc_remote_recipe.git
-    revision: abff4b0fb96552c71eb5466877b6874274fa380a
+    revision: c2333f14505d3317de328775e98f550e054e3ea7
     branch: master
   rsc_tomcat
     path: .
@@ -45,7 +45,7 @@ GRAPH
     homebrew (>= 0.0.0)
     windows (>= 0.0.0)
   lvm (4.0.5)
-  machine_tag (2.0.2)
+  machine_tag (2.0.3)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
   marker (2.0.0)
@@ -72,7 +72,7 @@ GRAPH
     rsyslog (>= 0.0.0)
     swap (>= 0.0.0)
     yum-epel (>= 0.0.0)
-  rsc_remote_recipe (10.1.0)
+  rsc_remote_recipe (10.1.1)
     build-essential (>= 0.0.0)
   rsc_tomcat (2.0.0)
     apt (>= 0.0.0)

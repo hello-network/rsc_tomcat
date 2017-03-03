@@ -10,4 +10,4 @@ before_script: chef exec rake setup_test_environment
 script: "./.travis_install.sh"
 notifications:
   slack:
-    secure: aDuEKuNP3a/xYFofTJ78W7BXaJkZQqBVlajawf3aonZkQY4k+nVoPPA0a+ejZ36u7nsV3VQL+AHGY/Impme7B/hfSIGhNmoLOxjzmlFw+spca0K3D7jio3LM30IQ5x7Y9gZ2MgUa0SSCRH9AY/UIRkCW/rzekKrKjxjX7t5z2zM=
+    secure: TZtg0/+HfwkV/nGt4rzG9Y/XEbC/ZgCAIE/g2REIS9KBAhk1LSDKDuf6kkMc8FVVEdzXwPvrP5etmZEhuL5fK+PER1vRUDbD+5KJr/NDL1fVMZ4y1HM0OO4vk+HEsbl1wc6EPErzWmkp7+9g6dUuCT46iyLTcpZPq6QCrUk8vUM=

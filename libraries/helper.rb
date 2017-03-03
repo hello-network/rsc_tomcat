@@ -66,5 +66,17 @@ module RsApplicationTomcat
         true
       end
     end
+
+    # Finds the available load balancers for the application
+    #
+    # @param node [Node] the chef node
+    #
+    # @param application_name [String] the name of the application on the load balancer to query
+    #
+    # @return [Array] array of load balancers found
+    #
+    def self.find_load_balancer_servers(node, application_name)
+        Rightscale::RightscaleTag.find_load_balancer_servers(node, application_name)
+    end
   end
-end
+end unless defined?(RsApplicationTomcat::Helper)

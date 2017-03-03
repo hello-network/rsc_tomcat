@@ -22,7 +22,6 @@ marker 'recipe_start_rightscale' do
 end
 
 # including defaults
-include_recipe 'apt'
 include_recipe 'build-essential'
 
 # override some attributes
@@ -74,6 +73,8 @@ end
 if !node['rsc_tomcat']['war']['path'].empty? && node['rsc_tomcat']['war']['path'] =~ /^http/
   remote_file "#{node["rsc_tomcat"]["home"]}/webapps/#{node['rsc_tomcat']['war']['path'].split('/').last}" do
     source node['rsc_tomcat']['war']['path']
+    owner "tomcat"
+    group "tomcat"
   end
 end
 

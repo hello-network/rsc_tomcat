@@ -19,6 +19,19 @@ describe 'Tomcat should be ready' do
 
   end
 
+  describe file('/opt/tomcat/webapps/sample.war') do
+    it { should be_file }
+    it { should be_owned_by 'tomcat' }
+    it { should be_grouped_into 'tomcat' }
+
+  end
+
+  describe file('/opt/tomcat/webapps/sample') do
+    it { should be_directory }
+    it { should be_owned_by 'tomcat' }
+    it { should be_grouped_into 'tomcat' }
+  end
+  
   describe command('cat /opt/tomcat/conf/Catalina/localhost/sample.xml') do
     its(:stdout) { should contain('url="jdbc:mysql://db1.example.com:3306/app_test"') }
     its(:stdout) { should contain('username="app_user"') }
@@ -26,6 +39,7 @@ describe 'Tomcat should be ready' do
     its(:stdout) { should contain('maxActive="100"') }
     its(:stdout) { should contain('maxIdle="100"') }
     its(:stdout) { should contain('maxWait="30000"') }
-
   end
+
+
 end

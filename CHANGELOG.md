@@ -5,7 +5,7 @@ This file is used to list changes made in each version of the rsc_tomcat cookboo
 
 v2.0.0
 ------
-- updating to chef12
+- updating to Chef 12
 
 v1.4.2
 ------

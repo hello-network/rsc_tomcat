@@ -2,14 +2,12 @@ marker 'recipe_start_rightscale' do
   template 'rightscale_audit_entry.erb'
 end
 
-class Chef::Recipe
-  include Rightscale::RightscaleTag
-end
 
 # Validate application name
 
 # Check if there is at least one load balancer in the deployment serving the application name
-if find_load_balancer_servers(node, node['rsc_tomcat']['application_name']).empty?
+puts "find xxlbs: #{RsApplicationTomcat::Helper.find_load_balancer_servers(node, node['rsc_tomcat']['application_name'])}"
+if RsApplicationTomcat::Helper.find_load_balancer_servers(node, node['rsc_tomcat']['application_name']).empty?
   raise "No load balancer servers found in the deployment serving #{node['rsc_tomcat']['application_name']}!"
 end
 
