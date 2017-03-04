@@ -41,47 +41,21 @@ suites:
       provider: 'vagrant'
       public_ips: ['100.64.1.1']
       private_ips: ['10.0.2.15']
+    rsc_ros:
+      provider: AWS
+      access_key: <%= ENV['AWS_ACCESS_KEY'] %>
+      secret_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+      bucket: cdw-demo
+      file: sample/sample.war
+      destination: /opt/tomcat/webapps
+      region: us-east-1
     rsc_tomcat:
       application_name: 'sample'
       listen_port: '8080'
       bind_network_interface: 'private'
       vhost_path: 'www.example.com'
-      war:
-        path: 'https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war'
       java:
         version: '8'
-        flavor: 'oracle'
-      database:
-        provider:  'mysql'
-        host: 'db1.example.com'
-        user: 'app_user'
-        password: 'app_pass'
-        schema: 'app_test'
-    rightscale:
-      instance_uuid: '1111111'
-
-- name: tar_install
-  run_list:
-  - recipe[rsc_tomcat::default]
-  - recipe[rsc_tomcat::tags]
-  attributes:
-    cloud:
-      provider: 'vagrant'
-      public_ips: ['100.64.1.1']
-      private_ips: ['10.0.2.15']
-    tomcat:
-      base_version: '7'
-      install_method: 'tar'
-      tar_version: '7.0.65'
-    rsc_tomcat:
-      application_name: 'sample'
-      listen_port: '8080'
-      bind_network_interface: 'private'
-      vhost_path: 'www.example.com'
-      war:
-        path: 'https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war'
-      java:
-        version: '7'
         flavor: 'oracle'
       database:
         provider:  'mysql'

@@ -56,13 +56,14 @@ directory "#{node['rsc_tomcat']['home']}/conf/Catalina/localhost" do
   recursive true
 end
 
+war_file = node["rsc_ros"]['file'].split('/').last
 # setup the default context file
 template "#{node['rsc_tomcat']['home']}/conf/Catalina/localhost/#{node['rsc_tomcat']['application_name']}.xml" do
   source node["rsc_tomcat"]["context_template"]
   cookbook node["rsc_tomcat"]["cookbook"]
   variables(
     app: node['rsc_tomcat']['application_name'],
-    war: "#{node["rsc_tomcat"]["home"]}/webapps/#{node['rsc_tomcat']['war']['path'].split('/').last}",
+    war: "#{node["rsc_tomcat"]["home"]}/webapps/#{war_file}",
     database:   node["rsc_tomcat"]["database"],
   )
   owner "tomcat"
@@ -70,20 +71,20 @@ template "#{node['rsc_tomcat']['home']}/conf/Catalina/localhost/#{node['rsc_tomc
   action :create
 end
 
-#download file and place it in the webapps dir
-if !node['rsc_tomcat']['war']['path'].empty? && node['rsc_tomcat']['war']['path'] =~ /^http/
-
-rsc_ros "" do
+rsc_ros "#{node['rsc_tomcat']['home']}/webapps/#{war_file}" do
   storage_provider node['rsc_ros']["provider"]
   access_key node["rsc_ros"]['access_key']
-  secret_key
-  bucket
-  file
-  destination
-  destination
+  secret_key node["rsc_ros"]['secret_key']
+  bucket node["rsc_ros"]['bucket']
+  file node["rsc_ros"]["file"]
+  destination "#{node["rsc_ros"]['destination']}/#{war_file}"
+  region node["rsc_ros"]['region']
   action :download
 end
 
+execute 'war file permissions' do
+  command "chown tomcat:tomcat #{node['rsc_tomcat']['home']}/webapps/#{war_file}"
+  action :run
 end
 
 # install and start the tomcat service
@@ -95,33 +96,3 @@ tomcat_service 'default' do
   tomcat_user 'tomcat'
   tomcat_group 'tomcat'
 end
-
-# application node['rsc_tomcat']['application_name'] do
-#   path "#{node['rsc_tomcat']['app_root']}/#{node['rsc_tomcat']['application_name']}"
-#   owner node['tomcat']['user']
-#   group node['tomcat']['group']
-#
-#   # Configure SCM to check out application from
-#   repository repository
-#   # revision node['rsc_tomcat']['war']['revision']
-#   scm_provider Chef::Provider::File::Deploy
-#
-#   # Configure Tomcat web app
-#   java_webapp do
-#     database do
-#       driver     database_adapter
-#       host       database_host
-#       database   database_schema
-#       username   database_user
-#       password   database_password
-#       port 	     database_port
-#       max_active database_max_active
-#       max_idle   database_max_idle
-#       max_wait   database_max_wait
-#     end
-#   end
-#
-#   tomcat
-#
-#   action :force_deploy
-# end

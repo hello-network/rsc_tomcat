@@ -17,6 +17,10 @@ DEPENDENCIES
     git: https://github.com/rightscale-services-cookbooks/rsc_remote_recipe.git
     revision: c2333f14505d3317de328775e98f550e054e3ea7
     branch: master
+  rsc_ros
+    git: https://github.com/rightscale-services-cookbooks/rsc_ros.git
+    revision: 9f4fb6263e64c1ed68b497197ddd02ab084ab138
+    branch: master
   rsc_tomcat
     path: .
     metadata: true
@@ -74,6 +78,7 @@ GRAPH
     yum-epel (>= 0.0.0)
   rsc_remote_recipe (10.1.1)
     build-essential (>= 0.0.0)
+  rsc_ros (2.0.0)
   rsc_tomcat (2.0.0)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
@@ -83,6 +88,7 @@ GRAPH
     rightscale_tag (~> 2.0.0)
     rs-base (~> 2.0.0)
     rsc_remote_recipe (~> 10.1.0)
+    rsc_ros (>= 0.0.0)
     tomcat (~> 2.0)
     yum (>= 0.0.0)
     yum-epel (>= 0.0.0)

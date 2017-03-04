@@ -85,3 +85,6 @@ default["rsc_tomcat"]["catalina_options"]=""
 default['rsc_tomcat']['java']['version'] = '7'
 default['rsc_tomcat']['java']['options'] = '-Xmx128M -Djava.awt.headless=true'
 default['rsc_tomcat']['java']['flavor'] = 'openjdk'
+
+# rsc_ros attributes
+default["rsc_ros"]["destination"] = "/opt/tomcat/webapps"

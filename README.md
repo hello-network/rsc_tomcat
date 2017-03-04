@@ -12,7 +12,6 @@ The RightScale API is used to run recipes on the HaProxy load balancer.
 * Centos 6.8, 7.2
 
 # Cookbooks
-the application_java and tomcat cookbooks below have been updated to support tomcat7.  
 * [java](https://github.com/agileorbit-cookbooks/java)
 * [rsc_remote_recipe](https://github.com/rightscale-services-cookbooks/rsc_remote_recipe)
 * [rsc_ros](https://github.com/rightscale-services-cookbooks/rsc_ros)

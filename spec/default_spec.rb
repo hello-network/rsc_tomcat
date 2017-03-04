@@ -7,7 +7,13 @@ describe 'rsc_tomcat::default' do
       node.set['rsc_tomcat']['listen_port'] = '8080'
       node.set['rsc_tomcat']['bind_network_interface'] = 'private'
       node.set['rsc_tomcat']['vhost_path'] = 'www.example.com'
-      node.set['rsc_tomcat']['war']['path'] = 'https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war'
+      node.set['rsc_ros']['file'] = 'sample/sample.war'
+      node.set['rsc_ros']['provider'] = 'aws'
+      node.set['rsc_ros']['access_key'] = 'abc123'
+      node.set['rsc_ros']['secret_key'] = 'secret'
+      node.set['rsc_ros']['bucket'] = 'sample'
+      node.set['rsc_ros']['destination'] = '/opt/tomcat/webapps'
+      node.set['rsc_ros']['region'] = 'us-east-1'
       node.set['rightscale']['refresh_token'] = '123456abcdef'
       node.set['rightscale']['api_url'] = 'https://us-3.rightscale.com'
     end.converge(described_recipe)
@@ -42,6 +48,10 @@ describe 'rsc_tomcat::default' do
 
   it "downloads war file" do
     expect(chef_run).to download_rsc_ros('/opt/tomcat/webapps/sample.war')
+  end
+
+  it "execute chmod" do
+    expect(chef_run).to run_execute('war file permissions')
   end
 
   it "enable tomcat service" do

@@ -6,7 +6,6 @@ end
 # Validate application name
 
 # Check if there is at least one load balancer in the deployment serving the application name
-puts "find xxlbs: #{RsApplicationTomcat::Helper.find_load_balancer_servers(node, node['rsc_tomcat']['application_name'])}"
 if RsApplicationTomcat::Helper.find_load_balancer_servers(node, node['rsc_tomcat']['application_name']).empty?
   raise "No load balancer servers found in the deployment serving #{node['rsc_tomcat']['application_name']}!"
 end
