@@ -76,7 +76,7 @@ module RsApplicationTomcat
     # @return [Array] array of load balancers found
     #
     def self.find_load_balancer_servers(node, application_name)
-        Rightscale::RightscaleTag.find_load_balancer_servers(node, application_name)
+      Rightscale::RightscaleTag.find_load_balancer_servers(node, application_name)
     end
   end
 end unless defined?(RsApplicationTomcat::Helper)

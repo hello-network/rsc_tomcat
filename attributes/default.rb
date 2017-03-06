@@ -73,18 +73,17 @@ default['rsc_tomcat']['remote_attach_recipe'] = 'rs-haproxy::frontend'
 default['rsc_tomcat']['remote_detach_recipe'] = 'rs-haproxy::frontend'
 
 # context template source, use override to use context from another cookbook
-default['rsc_tomcat']['context_template']='context.xml.erb'
-default['rsc_tomcat']['cookbook']='rsc_tomcat'
+default['rsc_tomcat']['context_template'] = 'context.xml.erb'
+default['rsc_tomcat']['cookbook'] = 'rsc_tomcat'
 # tomcat configuration
 
-default['rsc_tomcat']['version'] = "8.0.36"
-default['rsc_tomcat']['home'] = "/opt/tomcat"
-default["rsc_tomcat"]["catalina_options"]=""
+default['rsc_tomcat']['version'] = '8.0.36'
+default['rsc_tomcat']['home'] = '/opt/tomcat'
+default['rsc_tomcat']['catalina_options'] = '-Xmx128M -Djava.awt.headless=true'
 
 # java configuration
-default['rsc_tomcat']['java']['version'] = '7'
-default['rsc_tomcat']['java']['options'] = '-Xmx128M -Djava.awt.headless=true'
+default['rsc_tomcat']['java']['version'] = '8'
 default['rsc_tomcat']['java']['flavor'] = 'openjdk'
 
 # rsc_ros attributes
-default["rsc_ros"]["destination"] = "/opt/tomcat/webapps"
+default['rsc_ros']['destination'] = '/opt/tomcat/webapps'

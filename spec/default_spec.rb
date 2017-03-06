@@ -34,33 +34,31 @@ describe 'rsc_tomcat::default' do
     expect(chef_run).to create_group('tomcat')
   end
 
-  it "installs tomcat" do
+  it 'installs tomcat' do
     expect(chef_run).to install_tomcat_install('default')
   end
 
-  it "creates context directory" do
+  it 'creates context directory' do
     expect(chef_run).to create_directory('/opt/tomcat/conf/Catalina/localhost')
   end
 
-  it "creates context.xml" do
+  it 'creates context.xml' do
     expect(chef_run).to create_template('/opt/tomcat/conf/Catalina/localhost/sample.xml')
   end
 
-  it "downloads war file" do
+  it 'downloads war file' do
     expect(chef_run).to download_rsc_ros('/opt/tomcat/webapps/sample.war')
   end
 
-  it "execute chmod" do
+  it 'execute chmod' do
     expect(chef_run).to run_execute('war file permissions')
   end
 
-  it "enable tomcat service" do
+  it 'enable tomcat service' do
     expect(chef_run).to enable_tomcat_service('default')
   end
 
-  it "start tomcat service" do
+  it 'start tomcat service' do
     expect(chef_run).to start_tomcat_service('default')
   end
-
-
 end
