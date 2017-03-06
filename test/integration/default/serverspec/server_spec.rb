@@ -43,4 +43,8 @@ describe 'Tomcat should be ready' do
     its(:stderr) { should contain('1.8.0') }
     its(:exit_status) { should eq 0 }
   end
+
+  describe command('curl http://localhost:8080/sample/') do
+    its('stdout') { should match(/Sample \"Hello, World\" Application/) }
+  end
 end
