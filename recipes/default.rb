@@ -91,7 +91,7 @@ end
 tomcat_service 'default' do
   action [:start, :enable]
   install_path node['rsc_tomcat']['home']
-  env_vars [{ 'CATALINA_OPTS' => node['rsc_tomcat']['catalina_options'] }]
+  env_vars [{ 'CATALINA_OPTS' => node['rsc_tomcat']['catalina_options'],'CATALINA_PID' => '/var/run/tomcat.pid'  }]
   sensitive true
   tomcat_user 'tomcat'
   tomcat_group 'tomcat'
