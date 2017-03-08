@@ -1,7 +1,7 @@
 DEPENDENCIES
   machine_tag
     git: https://github.com/rightscale-cookbooks/machine_tag.git
-    revision: 07f504ff554534e41099019fc911b3ea1dd8382c
+    revision: 059187968cd8119a4ec39a660b485de6a21043eb
   marker
     git: https://github.com/rightscale-cookbooks/marker.git
     revision: 058e70879408fceceb628c600d487b1ddfa06cdb
@@ -34,6 +34,7 @@ GRAPH
   build-essential (8.0.0)
     mingw (>= 1.1)
     seven_zip (>= 0.0.0)
+  chef-sugar (3.4.0)
   collectd (2.2.4)
     poise (~> 2.2)
     poise-service (~> 1.0)
@@ -49,9 +50,10 @@ GRAPH
     homebrew (>= 0.0.0)
     windows (>= 0.0.0)
   lvm (4.0.5)
-  machine_tag (2.0.3)
+  machine_tag (2.0.4)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
+    chef-sugar (>= 0.0.0)
   marker (2.0.0)
   mingw (2.0.0)
     seven_zip (>= 0.0.0)
