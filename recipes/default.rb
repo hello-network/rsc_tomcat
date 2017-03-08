@@ -91,8 +91,15 @@ end
 tomcat_service 'default' do
   action [:start, :enable]
   install_path node['rsc_tomcat']['home']
-  env_vars [{ 'CATALINA_OPTS' => node['rsc_tomcat']['catalina_options'],'CATALINA_PID' => '/var/run/tomcat.pid'  }]
+  env_vars [{
+    'CATALINA_OPTS' => node['rsc_tomcat']['catalina_options'],
+    'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }]
   sensitive true
   tomcat_user 'tomcat'
   tomcat_group 'tomcat'
+end
+
+service 'iptable' do
+  action :stop
+  only_if { node['platform_family'] == 'fedora' }
 end
