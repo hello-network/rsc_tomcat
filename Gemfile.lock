@@ -108,6 +108,8 @@ GEM
     kitchen-dokken (2.1.2)
       docker-api (~> 1.33)
       test-kitchen (~> 1.15)
+    kitchen-vagrant (0.21.1)
+      test-kitchen (~> 1.4)
     libyajl2 (1.2.0)
     machine_tag (1.1.3)
     minitar (0.6.1)
@@ -251,6 +253,7 @@ DEPENDENCIES
   chef (~> 12.16.0)
   coveralls
   kitchen-dokken
+  kitchen-vagrant
   machine_tag
   rake
 
