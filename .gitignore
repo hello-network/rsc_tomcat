@@ -9,7 +9,6 @@
 cache_dir
 
 # Bundler
-Gemfile.lock
 bin/*
 .bundle/*
 
