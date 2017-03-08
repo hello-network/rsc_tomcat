@@ -1,0 +1,122 @@
+driver:
+  name: dokken
+  privileged: true # because Docker and SystemD/Upstart
+  chef_version: 12.16.42
+
+transport:
+  name: dokken
+
+provisioner:
+  name: dokken
+
+verifier:
+  name: inspec
+
+platforms:
+- name: debian-8
+  driver:
+    image: debian:8
+    pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+      - RUN /usr/bin/apt-get install apt-transport-https lsb-release procps net-tools -y
+
+- name: centos-6
+  driver:
+    image: centos:6
+    platform: rhel
+    pid_one_command: /sbin/init
+    intermediate_instructions:
+      - RUN yum -y install which initscripts net-tools wget
+
+- name: centos-7
+  driver:
+    image: centos:7
+    platform: rhel
+    pid_one_command: /usr/lib/systemd/systemd
+    intermediate_instructions:
+      - RUN yum -y install lsof which systemd-sysv initscripts wget net-tools
+
+- name: fedora-latest
+  driver:
+    image: fedora:latest
+    pid_one_command: /usr/lib/systemd/systemd
+    intermediate_instructions:
+      - RUN dnf -y install yum which systemd-sysv initscripts wget net-tools
+
+- name: ubuntu-12.04
+  driver:
+    image: ubuntu-upstart:12.04
+    pid_one_command: /sbin/init
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+      - RUN /usr/bin/apt-get install apt-transport-https lsb-release procps net-tools -y
+
+- name: ubuntu-14.04
+  driver:
+    image: ubuntu-upstart:14.04
+    pid_one_command: /sbin/init
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+      - RUN /usr/bin/apt-get install apt-transport-https lsb-release procps net-tools -y
+
+- name: ubuntu-16.04
+  driver:
+    image: ubuntu:16.04
+    pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+      - RUN /usr/bin/apt-get install apt-transport-https lsb-release procps net-tools -y
+
+- name: opensuse-13.2
+  driver:
+    image: opensuse:13.2
+    pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive which net-tools
+
+- name: opensuse-leap
+  driver:
+    image: opensuse:leap
+    pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive which hostname
+# Tests the basic HAProxy configuration, load balancer related machine tags set on the server, and
+# the HAProxy collectd monitoring configuration. The HAProxy configuration is verified by ensuring
+# the HAProxy parameters in the haproxy.cfg file are set up as expected.
+#
+suites:
+- name: default
+  run_list:
+  - recipe[fake::create_secrets]
+  - recipe[rsc_tomcat::default]
+  - recipe[rsc_tomcat::tags]
+  attributes:
+    cloud:
+      provider: 'vagrant'
+      public_ips: ['100.64.1.1']
+      private_ips: ['10.0.2.15']
+    rsc_ros:
+      provider: AWS
+      access_key: <%= ENV['AWS_ACCESS_KEY'] %>
+      secret_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+      bucket: cdw-demo
+      file: sample/sample.war
+      destination: /opt/tomcat/webapps
+      region: us-east-1
+    rsc_tomcat:
+      application_name: 'sample'
+      listen_port: '8080'
+      bind_network_interface: 'private'
+      vhost_path: 'www.example.com'
+      java:
+        version: '8'
+        flavor: 'oracle'
+      database:
+        provider:  'mysql'
+        host: 'db1.example.com'
+        user: 'app_user'
+        password: 'app_pass'
+        schema: 'app_test'
+    rightscale:
+      instance_uuid: '1111111'
