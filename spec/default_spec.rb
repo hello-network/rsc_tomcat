@@ -61,4 +61,9 @@ describe 'rsc_tomcat::default' do
   it 'start tomcat service' do
     expect(chef_run).to start_tomcat_service('default')
   end
+
+  #only runs on centos
+  it 'stops iptable' do
+    expect(chef_run).to_not stop_service('iptable')
+  end
 end

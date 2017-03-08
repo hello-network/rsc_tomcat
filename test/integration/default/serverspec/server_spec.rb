@@ -8,8 +8,12 @@ describe 'Tomcat should be ready' do
     expect(port(8080)).to be_listening
   end
 
-  describe file('/opt/tomcat/bin/setenv.sh') do
+  # setenv is only created on centos 6
+  describe file('/opt/tomcat/bin/setenv.sh'),
+  if: (os[:family] == 'redhat' && os[:release] == '6') do
     its(:content) { should match Regexp.new("(((CATALINA_OPTS=)(.)((-[a-zA-Z]+[0-9]+[a-zA-Z][ ]+)|(-[a-zA-Z:]+=)[0-9]+[a-zA-Z][ ])+.+)|(CATALINA_OPTS=''))") }
+    its(:content) { should contain 'CATALINA_BASE=/opt/tomcat' }
+    its(:content) { should contain 'CATALINA_PID="$CATALINA_BASE/bin/tomcat/pid"' }
   end
 
   describe file('/opt/tomcat/conf/Catalina/localhost/sample.xml') do
@@ -34,9 +38,6 @@ describe 'Tomcat should be ready' do
     its(:stdout) { should contain('url="jdbc:mysql://db1.example.com:3306/app_test"') }
     its(:stdout) { should contain('username="app_user"') }
     its(:stdout) { should contain('password="app_pass"') }
-    its(:stdout) { should contain('maxActive="100"') }
-    its(:stdout) { should contain('maxIdle="100"') }
-    its(:stdout) { should contain('maxWait="30000"') }
   end
 
   describe command('/usr/bin/java -version') do
