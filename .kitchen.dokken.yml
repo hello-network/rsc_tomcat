@@ -88,7 +88,6 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[fake::create_secrets]
   - recipe[rsc_tomcat::default]
   - recipe[rsc_tomcat::tags]
   attributes:
