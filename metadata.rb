@@ -38,7 +38,7 @@ attribute 'rsc_tomcat/listen_port',
   recipes: [
     'rsc_tomcat::default',
     'rsc_tomcat::tags',
-    'rsc_tomcat::application_backend'
+    'rsc_tomcat::application_backend',
   ]
 
 attribute 'rsc_tomcat/war/path',
@@ -58,7 +58,7 @@ attribute 'rsc_tomcat/application_name',
     'rsc_tomcat::default',
     'rsc_tomcat::tags',
     'rsc_tomcat::application_backend',
-    'rsc_tomcat::application_backend_detached'
+    'rsc_tomcat::application_backend_detached',
   ]
 
 attribute 'rsc_tomcat/app_root',
@@ -79,7 +79,7 @@ description: 'The virtual host served by the application server. The virtual hos
 required: 'required',
 recipes: [
   'rsc_tomcat::tags',
-  'rsc_tomcat::application_backend'
+  'rsc_tomcat::application_backend',
 ]
 
 attribute 'rsc_tomcat/bind_network_interface',
@@ -91,7 +91,7 @@ attribute 'rsc_tomcat/bind_network_interface',
   required: 'optional',
   recipes: [
     'rsc_tomcat::default',
-    'rsc_tomcat::tags'
+    'rsc_tomcat::tags',
   ]
 
 attribute 'rsc_tomcat/database/host',
