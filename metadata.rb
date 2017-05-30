@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@rightscale.com'
 license          'Apache 2.0'
 description      'Installs/Configures tomcat app server'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.4.2'
+version          '1.4.3'
 
 depends 'yum', '~> 3.10.0'
 depends 'apt', '~> 2.9.2'
@@ -162,3 +162,13 @@ attribute 'tomcat/tar_version',
   :description => "Tomcat version to install from tar",
   :required => 'optional',
   :recipes => ['rsc_tomcat::default']
+
+attribute 'rsc_tomcat/application_pool_list',
+  :display_name => 'Application Pool List',
+  :description => 'A CSV list of application pools to connect to on the front end',
+  :required => 'required',
+  :recipes => [
+  'rsc_tomcat::default',
+  'rsc_tomcat::tags',
+  'rsc_tomcat::application_backend',
+  'rsc_tomcat::application_backend_detached']
